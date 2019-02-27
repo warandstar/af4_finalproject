@@ -57,3 +57,5 @@ get_state_avg_change <- function(county, state) {
               house_2010 = mean(X2019.01.house, na.rm = TRUE), house_2019 = mean(X2010.11.house, na.rm = TRUE), 
               rent_2010 = mean(X2019.01.rent, na.rm = TRUE), rent_2019 = mean(X2010.11.rent, na.rm = TRUE))
 }
+
+

@@ -1,0 +1,15 @@
+---
+title: "visualization_example"
+author: "AF4"
+date: "February 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source(file = "./project.R")
+county = "King County"
+state = "WA"
+```
+
+## Visualization Example
