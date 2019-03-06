@@ -9,14 +9,19 @@ library("dplyr")
 house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
 rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
 
+View(house_price_data)
+
 # section 2.3 about sample data set
 # using seattle as example:
 
 house_sample_data <- house_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2010.11, X2015.11, X2019.01)
+View(house_sample_data)
 
 rent_sample_data <- rent_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2010.11, X2015.11, X2019.01)
+View(rent_sample_data)
+
 
 # section 3
 
@@ -27,6 +32,8 @@ rent_sample_data <- rent_price_data %>%
 
 house_national_price_change <- house_sample_data %>%
   summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
+
+View(house_national_price_change)
   
 rent_national_price_change <- rent_sample_data %>%
   summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
@@ -57,5 +64,7 @@ get_state_avg_change <- function(county, state) {
               house_2010 = mean(X2019.01.house, na.rm = TRUE), house_2019 = mean(X2010.11.house, na.rm = TRUE), 
               rent_2010 = mean(X2019.01.rent, na.rm = TRUE), rent_2019 = mean(X2010.11.rent, na.rm = TRUE))
 }
+
+
 
 
