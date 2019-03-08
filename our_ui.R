@@ -42,7 +42,7 @@ our_ui <- fluidPage(
                   tabPanel("Get Rent Change Rate", textOutput("three_summary"), plotOutput("three_plot")),
                   tabPanel("Get Both House & Rent Change Rate", textOutput("four_summary"), plotOutput("four_plot")),
                   tabPanel("Resources", includeHTML("resource.html")),
-                  tabPanel("Authors", includeHTML("author.html")))
+                  tabPanel("Developers", includeHTML("author.html")))
       )
     )
 )
