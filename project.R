@@ -22,9 +22,7 @@ rent_sample_data <- rent_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2010.11, X2015.11, X2019.01)
 View(rent_sample_data)
 
-
 # section 3
-
 
 # sort the cities by the county to find the main city and its satellite cities
 # it returns column of data about cities and its price change 
