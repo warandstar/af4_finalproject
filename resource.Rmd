@@ -1,0 +1,27 @@
+---
+title: ''
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Collected Data: 
+
+#### [Zillow Research Website](https://www.zillow.com/research/data/)
+
+
+
+
+## App Details:
+
+#### [RStudio ShinyApp](https://www.shinyapps.io/)
+
+
+
+
+## Coding: 
+
+#### [Programming Skills for Data Science](https://learning.oreilly.com/library/view/programming-skills-for/9780135159071/ch01.xhtml)

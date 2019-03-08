@@ -31,6 +31,7 @@ View(rent_sample_data)
 house_national_price_change <- house_sample_data %>%
   summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
 
+
 View(house_national_price_change)
   
 rent_national_price_change <- rent_sample_data %>%
@@ -43,6 +44,7 @@ get_metro_avg_house_change <- function(county, state) {
     summarize(county_name = county, diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
   report_house_data
 }
+
 
 # get the difference of prices and percent change in rent in specific county 
 get_state_avg_rent_change <- function(county, state) {

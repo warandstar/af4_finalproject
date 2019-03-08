@@ -37,10 +37,12 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
-                  tabPanel("Table", textOutput("table_summary"), tableOutput("table")),
-                  tabPanel("Visualization", textOutput("plot_summary"), plotOutput("visualization"),
-                  tabPanel("Authors", textOutput("author_details")))
+                  tabPanel("Compare Seattle & US National Rates", textOutput("one_summary"), plotOutput("one_plot")),
+                  tabPanel("Get House Change Rate", textOutput("two_summary"), plotOutput("two_plot")),
+                  tabPanel("Get Rent Change Rate", textOutput("three_summary"), plotOutput("three_plot")),
+                  tabPanel("Get Both House & Rent Change Rate", textOutput("four_summary"), plotOutput("four_plot")),
+                  tabPanel("Resources", includeHTML("resource.html")),
+                  tabPanel("Authors", includeHTML("author.html")))
       )
     )
-  )
 )
