@@ -19,7 +19,7 @@ our_ui <- fluidPage(
     sidebarPanel(
       
       # Input: textInput ----
-      textInput(inputId = "data_type", label = "Enter Table or Plot", value = "Plot"),
+      textInput(inputId = "data_type", label = "Enter 'State-specific' or 'All States'", value = "State-specifc"),
       
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -37,11 +37,12 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
-                  tabPanel("Compare Seattle & US National Rates", textOutput("one_summary"), textOutput("one_summary"), plotOutput("one_plot")),
-                  tabPanel("Compare House & Rent Rates in Seattle", textOutput("two_summary"), textOutput("two_summary"), plotOutput("two_plot")),
-                  tabPanel("Compare House & Rent Rates in U.S. States", tableOutput("three_table"), textOutput("three_summary"), plotOutput("three_plot")),
+                  tabPanel("Seattle & US National Rates", textOutput("one_summary"), tableOutput("one_table"), plotOutput("one_plot")),
+                  tabPanel("House & Rental Rates in Seattle", textOutput("two_summary"), plotOutput("two_plot"), tableOutput("two_table")),
+                  tabPanel("House & Rental Rates in U.S.", plotOutput("three_plot"), textOutput("three_summary")),
                   tabPanel("Resources", includeHTML("resource.html")),
                   tabPanel("Developers", includeHTML("author.html")))
       )
     )
 )
+
