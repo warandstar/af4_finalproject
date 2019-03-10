@@ -10,7 +10,7 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Explore Gentrification in U.S."),
+  titlePanel("Explore Housing & Rental in U.S. comapring to Seattle"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -37,8 +37,9 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
-                  tabPanel("Compare Seattle & US National Rates", textOutput("one_summary"), plotOutput("one_plot")),
-                  tabPanel("Compare House & Rent Rates", tableOutput("four_table"), textOutput("four_summary"), plotOutput("four_plot")),
+                  tabPanel("Compare Seattle & US National Rates", textOutput("one_summary"), textOutput("one_summary"), plotOutput("one_plot")),
+                  tabPanel("Compare House & Rent Rates in Seattle", textOutput("two_summary"), textOutput("two_summary"), plotOutput("two_plot")),
+                  tabPanel("Compare House & Rent Rates in U.S. States", tableOutput("three_table"), textOutput("three_summary"), plotOutput("three_plot")),
                   tabPanel("Resources", includeHTML("resource.html")),
                   tabPanel("Developers", includeHTML("author.html")))
       )

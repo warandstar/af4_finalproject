@@ -23,12 +23,26 @@ library("urbnmapr")
 #get_data = urbnmapr::states %>%
 #select(long, lat, group, state_abbv)
 
+
+WA_data <- house_only %>%
+ filter(City == "Seattle")
+View(WA_data)
+ group_by(City) %>% 
+  summarize(
+    price15 <- mean(X2015.01),
+    price16 <- mean(X2016.01),
+    price17 <- mean(X2017.01),
+    price18 <- mean(X2018.01),
+    price19 <- mean(X2019.01)
+  )
+
+  
 # house data
 house_data <- house_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
 
 house_only <- house_price_data %>% 
-  select(State, X2015.01, X2016.01, X2017.01, X2018.01, X2019.01)
+  select(State, City, X2015.01, X2016.01, X2017.01, X2018.01, X2019.01)
 
 h_only <- gather(house_only, year, cost, -State)
 
@@ -42,6 +56,17 @@ house_price_summary <- h_only%>%
 # rent
 rent_data <- rent_price_data %>%
 select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
+
+rent_only <- rent_price_data %>% 
+  select(State, X2015.01, X2016.01, X2017.01, X2018.01, X2019.01)
+
+r_only <- gather(rent_only, year, cost, -State)
+
+rent_price_summary <- r_only%>%
+  group_by(State) %>%
+  summarize(
+    Rental_Price = mean(cost)
+  )
 
 
 # state house data
@@ -64,7 +89,7 @@ state_summary <- combined_house_rent%>%
     Rental_Price = mean(Rental)
   )
 
-output$four_plot <- renderPlot({
+output$three_plot <- renderPlot({
   
   if(input$analysis_var == "Both" && input$data_type == "Plot") {
   both_plot <-  ggplot(data = state_summary, na.rm = F) +
@@ -96,6 +121,21 @@ output$four_plot <- renderPlot({
                   x = "State Abbreviations" #  # y-axis label      
               ) 
   house_plot
+  } else {
+    rent_plot <- ggplot(data = rent_price_summary, na.rm = F) +
+      geom_col(
+        mapping = aes(x = State, y = Rental_Price), 
+        color = "green",
+        size = 2
+      ) +
+      # Add title and axis labels
+      labs(
+        title = "Compare last 5 years (2015-2019) Rental Price in U.S. States", # map title
+        y = "Rental Price (in dollars)", # x-axis label
+        x = "State Abbreviations" #  # y-axis label      
+      ) 
+    rent_plot
+    
   }
   
 })
