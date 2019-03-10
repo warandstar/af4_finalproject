@@ -10,7 +10,7 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Compare Seattle Housing Market to that of U.S."),
+  titlePanel("Explore Gentrification in U.S."),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -19,7 +19,7 @@ our_ui <- fluidPage(
     sidebarPanel(
       
       # Input: textInput ----
-      textInput(inputId = "data_type", label = "", value = ""),
+      textInput(inputId = "data_type", label = "Enter Table or Plot", value = "Plot"),
       
       # br() element to introduce extra vertical spacing ----
       br(),
@@ -28,7 +28,7 @@ our_ui <- fluidPage(
       selectInput(
         inputId = "analysis_var",
         label =  "Choose A Type of Analysis",
-        choices = c()
+        choices = c("House Price", "Rental Price", "Both")
       )
     ),
     

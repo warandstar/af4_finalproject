@@ -20,8 +20,8 @@ our_server <- function(input, output) {
 #library("tidyverse")
 library("urbnmapr")
 # state map data
-get_data = urbnmapr::states %>%
-  select(long, lat, group, state_abbv)
+#get_data = urbnmapr::states %>%
+#select(long, lat, group, state_abbv)
 
 # data
 house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
@@ -29,11 +29,13 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 
 # house data
 house_data <- house_price_data %>%
-  select(RegionID, RegionName, City, State, Metro, CountyName, X2019.01)
+  select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
+
+
 
 # rent
 rent_data <- rent_price_data %>%
-select(RegionID, RegionName, City, State, Metro, CountyName, X2019.01)
+select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
 
 
 # state house data
@@ -44,45 +46,35 @@ state_house_data <- house_data %>%
 state_rent_data <- rent_data %>%
   select(State, X2019.01)
 
+combined_house_rent <- left_join(state_house_data, state_rent_data, by = "State")
+
 # change colnames
-colnames(get_data) <- c("long", "lat", "group", "State")
+colnames(combined_house_rent) <- c("State", "House", "Rental")
 
-# joining data with left join
-combined_house_data <- left_join(get_data, state_house_data, by = "State")
-colnames(combined_house_data) <- c("long", "lat", "group", "State", "Price")
+state_summary <- combined_house_rent%>%
+  group_by(State) %>%
+  summarize(
+    House_Price = mean(House),
+    Rental_Price = mean(Rental)
+  )
 
-combined_rent_data <- left_join(get_data, state_rent_data, by = "State")
-colnames(combined_rent_data) <- c("long", "lat", "group", "State", "Price")
-
-# get house plot
-house_plot <- ggplot(data = combined_house_data, na.rm = F) +
-  geom_polygon(
-    mapping = aes(x = long, y = lat, fill = Price, group = group),
-    color = "white", # thinly stroked
-    size = .7
-  ) + 
-  # Add title and axis labels
-  labs(
-    title = "State specific House Rates in 2019 (most recent)", # map title
-    x = "Longitude", # x-axis label
-    y = "Latitude" #  # y-axis label 
-  ) +
-  coord_map()
-
-# get rent plot
-rent_plot <- ggplot(data = combined_rent_data, na.rm = F) +
-  geom_polygon(
-    mapping = aes(x = long, y = lat, fill = Price, group = group),
-    color = "white", # thinly stroked
-    size = .7
-  ) + 
-  # Add title and axis labels
-  labs(
-    title = "State specific House Rates in 2019 (most recent)", # map title
-    x = "Longitude", # x-axis label
-    y = "Latitude" #  # y-axis label 
-  ) +
-  coord_map()
+output$four_plot <- renderPlot({
+  
+  both_plot <-  ggplot(data = state_summary, na.rm = F) +
+    geom_jitter(
+      mapping = aes(x= House_Price, y= Rental_Price, color = State), # thinly stroked
+      size = 5
+    ) + 
+    # Add title and axis labels
+    labs(
+      title = "State Specific House Price Vs Rental Rates (2019)", # map title
+      x = "House Rates (in dollars)", # x-axis label
+      y = "Rental Rates (in dollars)" #  # y-axis label 
+    ) 
+   both_plot
+ 
+  
+})
 
 }
   
