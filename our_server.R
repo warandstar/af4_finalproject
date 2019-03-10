@@ -23,14 +23,20 @@ library("urbnmapr")
 #get_data = urbnmapr::states %>%
 #select(long, lat, group, state_abbv)
 
-# data
-house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
-rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
-
 # house data
 house_data <- house_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
 
+house_only <- house_price_data %>% 
+  select(State, X2015.01, X2016.01, X2017.01, X2018.01, X2019.01)
+
+h_only <- gather(house_only, year, cost, -State)
+
+house_price_summary <- h_only%>%
+  group_by(State) %>%
+  summarize(
+    House_Price = mean(cost)
+  )
 
 
 # rent
@@ -60,10 +66,11 @@ state_summary <- combined_house_rent%>%
 
 output$four_plot <- renderPlot({
   
+  if(input$analysis_var == "Both" && input$data_type == "Plot") {
   both_plot <-  ggplot(data = state_summary, na.rm = F) +
     geom_jitter(
       mapping = aes(x= House_Price, y= Rental_Price, color = State), # thinly stroked
-      size = 5
+      size = 3
     ) + 
     # Add title and axis labels
     labs(
@@ -72,7 +79,24 @@ output$four_plot <- renderPlot({
       y = "Rental Rates (in dollars)" #  # y-axis label 
     ) 
    both_plot
- 
+  } else if (input$analysis_var == "House Price" && input$data_type == "Plot") {
+   
+   # A bar chart of the total population of each state
+   # The `state` is mapped to the x-axis, and the `poptotal` is mapped
+   # to the y-axis
+  house_plot <- ggplot(data = house_price_summary) +
+     geom_col(
+       mapping = aes(x = State, y = House_Price), 
+       size = 2
+       ) +
+                # Add title and axis labels
+                labs(
+                  title = "Compare last 5 years (2015-2019) House Price in U.S. States", # map title
+                  y = "House Price (in dollars)", # x-axis label
+                  x = "State Abbreviations" #  # y-axis label      
+              ) 
+  house_plot
+  }
   
 })
 
