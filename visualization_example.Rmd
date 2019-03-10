@@ -14,3 +14,7 @@ state = "WA"
 
 ## Visualization Example
 
+```{r viz, echo=FALSE}
+source("our_server.R")
+house_plot
+```

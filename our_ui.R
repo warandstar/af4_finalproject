@@ -40,7 +40,7 @@ our_ui <- fluidPage(
                   tabPanel("Compare Seattle & US National Rates", textOutput("one_summary"), plotOutput("one_plot")),
                   tabPanel("Get House Change Rate", textOutput("two_summary"), plotOutput("two_plot")),
                   tabPanel("Get Rent Change Rate", textOutput("three_summary"), plotOutput("three_plot")),
-                  tabPanel("Get Both House & Rent Change Rate", textOutput("four_summary"), plotOutput("four_plot")),
+                  tabPanel("Compare House & Rent Rates", textOutput("four_summary"), plotOutput("four_plot")),
                   tabPanel("Resources", includeHTML("resource.html")),
                   tabPanel("Developers", includeHTML("author.html")))
       )
