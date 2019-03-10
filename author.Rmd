@@ -29,6 +29,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### This is us:
 
 ![Raida Karim](./img/img_raida.jpg){width=150px}
-![JongTai Kim](./img/img_jongtai.jpg){width=150px}
+
+![JongTai Kim](./img/img_jongtai.png){width=200px}
 
 
