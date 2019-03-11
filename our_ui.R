@@ -21,7 +21,7 @@ our_ui <- fluidPage(
       radioButtons(
         inputId = "var_type",
         label = "Choose Rate or Percentage Change",
-        choices = c("Rate" = "Price in Dollars", "Percentage" = "Percentage"),
+        choices = c("Price in Dollars" = "Rate", "Percentage" = "Percentage"),
         selected = "Rate"
       ),
       
@@ -71,7 +71,7 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
-                  tabPanel("Comparison between Seattle & US Data", value = "1st", textOutput("one_summary"), tableOutput("one_table"), plotOutput("one_plot")),
+                  tabPanel("Comparison between Seattle & US Data", value = "1st", plotOutput("us_plot")),
                   tabPanel("Comparison between House & Rent In Seattle", value = "2nd", textOutput("two_summary"), plotOutput("two_plot"), tableOutput("two_table")),
                   tabPanel("Comparison between Seattle & Washington state", value = "3rd", plotOutput("three_plot"), textOutput("three_summary")),
                   tabPanel("Comparison between Seattle & Other Cities", value = "4th", plotOutput("other_city_plot")),
