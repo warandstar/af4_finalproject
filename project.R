@@ -17,13 +17,13 @@ house_national_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-  mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
 rent_national_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-  mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
 years <- substring(house_national_data$year, 2, 8)
 
@@ -43,7 +43,7 @@ get_metropolitan_house_data <- function(city) {
     gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
     group_by(year) %>%
     summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-    mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+    mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
   
   result
 }
@@ -60,7 +60,7 @@ get_metropolitan_rent_data <- function(city) {
     gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
     group_by(year) %>%
     summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-    mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+    mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
   
   result
 }
@@ -78,7 +78,7 @@ house_washington_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-  mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
 rent_washington_data <- rent_price_data %>%
   filter(State == "WA") %>%
@@ -86,5 +86,5 @@ rent_washington_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
-  mutate(Percentage = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
