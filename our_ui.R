@@ -74,7 +74,7 @@ our_ui <- fluidPage(
                   tabPanel("Comparison between Seattle & US Data", value = "1st", textOutput("one_summary"), tableOutput("one_table"), plotOutput("one_plot")),
                   tabPanel("Comparison between House & Rent In Seattle", value = "2nd", textOutput("two_summary"), plotOutput("two_plot"), tableOutput("two_table")),
                   tabPanel("Comparison between Seattle & Washington state", value = "3rd", plotOutput("three_plot"), textOutput("three_summary")),
-                  tabPanel("Comparison between Seattle & Other Cities", value = "4th"),
+                  tabPanel("Comparison between Seattle & Other Cities", value = "4th", plotOutput("other_city_plot")),
                   tabPanel("Map 1", value = "5th"),
                   tabPanel("Map 2", value = "6th"),
                   tabPanel("Resources", value = "7th", includeHTML("resource.html")),
