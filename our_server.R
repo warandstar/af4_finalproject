@@ -21,21 +21,37 @@ our_server <- function(input, output) {
   house_national_data <- reactive({
     data <- house_national_data %>%
       select(year, input$var_type)
+    data
   })
   
   rent_national_data <- reactive({
     data <- rent_national_data %>%
       select(year, input$var_type)
+    data
   })
   
   house_seattle_data <- reactive({
     data <- house_national_data %>%
       select(year, input$var_type)
+    data
   })
   
   rent_seattle_data <- reactive({
     data <- rent_national_data %>%
       select(year, input$var_type)
+    data
+  })
+  
+  other_city_house_data <- reactive({
+    data <- get_metropolitan_house_data(input$city) %>%
+      select(year, input$var_type)
+    data
+  })
+  
+  other_city_rent_data <- reactive({
+    data <- get_metropolitan_rent_data(input$city) %>%
+      select(year, input$var_type)
+    data
   })
   
   # Creating plots for housing/rental and rate/percentage
@@ -72,14 +88,7 @@ our_server <- function(input, output) {
   })
 
   
-  other_city_house_data <- reactive({
-    data <- get_metropolitan_house_data(input$city)
-  })
-  
-  other_city_rent_data <- reactive({
-    data <- get_metropolitan_rent_data(input$city)
-    data
-  })
+
   
 
 
