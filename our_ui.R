@@ -7,7 +7,7 @@ our_ui <- fluidPage(
   
   # App title ----
   titlePanel("Should you buy a house or rent one to live in any of U.S. States or especially in Seattle?
-             Find Out with our Technocrats App!"),
+             Find out with our Technocrats App!"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -15,17 +15,12 @@ our_ui <- fluidPage(
     # Sidebar panel for inputs ----
     sidebarPanel(
       
-      # Input: textInput ----
-      textInput(inputId = "data_type", label = "Enter 'State-specific' or 'All States'", value = "State-specifc"),
-      
-      # br() element to introduce extra vertical spacing ----
-      br(),
       
       # Input: select input with some choices----
       selectInput(
         inputId = "analysis_var",
         label =  "Choose A Type of Analysis",
-        choices = c("House Price", "Rental Price", "Both")
+        choices = c("House Price", "Rental Price", "Difference")
       )
     ),
     

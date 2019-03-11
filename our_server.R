@@ -87,24 +87,24 @@ state_summary <- combined_house_rent%>%
     House_Price = mean(House),
     Rental_Price = mean(Rental)
   )
+state_summary$Rental_Price <- 12*state_summary$Rental_Price
+state_summary <- mutate(state_summary, difference = House_Price - Rental_Price)
 
-output$three_plot <- renderPlot({
-  
-  if(input$analysis_var == "Both" && input$data_type == "All States") {
+output$us_plot <- renderPlot ({
+  if(input$analysis_var == "Difference") {
   both_plot <-  ggplot(data = state_summary, na.rm = F) +
-    geom_jitter(
-      mapping = aes(x= House_Price, y= Rental_Price, color = State), # thinly stroked
-      size = 3
+    geom_col(
+      mapping = aes(x= State, y= difference), # thinly stroked
+      size = 2
     ) + 
     # Add title and axis labels
     labs(
-      title = "State Specific House Price Vs Rental Rates (2019)", # map title
-      x = "House Rates (in dollars)", # x-axis label
-      y = "Rental Rates (in dollars)" #  # y-axis label 
+      title = "State Specific Difference in House & Rental Rates", # map title
+      x = "State Abbreviations", # x-axis label
+      y = "Difference in House & Rental Rates (in dollars)" #  # y-axis label 
     ) 
    both_plot
-  } else if (input$analysis_var == "House Price" && input$data_type == "State-specific") {
-   
+  } else if (input$analysis_var == "House Price") {
    # A bar chart of the total population of each state
    # The `state` is mapped to the x-axis, and the `poptotal` is mapped
    # to the y-axis
@@ -134,8 +134,28 @@ output$three_plot <- renderPlot({
       ) 
     rent_plot
   }
-  
 })
+  
+  output$us_summary <- renderText({
+    if(input$analysis_var == "House Price") {
+      paste0("This visualization demonstrates the rates of ", input$analysis_var, " (in dollars) for almost each state in U.S. by deploying the 'House Price (in dollars)' in 
+              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time House Price Rates differs from State-to-State in U.S. in most recent years? 
+              Analysis: The one time House Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $100000 to $600000 as clearly conveyed by our plot.")
+      
+    } else if(input$analysis_var == "Rental Price") {
+      paste0("This visualization demonstrates the rates of ", input$analysis_var, " (in dollars) for almost each state in U.S. by deploying the 'Rental Price (in dollars)' in 
+              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time Rental Price Rates differs from State-to-State in U.S. in most recent years? 
+              Analysis: The annual Rental Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $12000 to $48000 as clearly conveyed by our plot.")
+      
+    } else {
+      paste0("This visualization demonstrates the difference between the rates of ", input$analysis_var, " (in dollars) for almost each state in U.S. by deploying the 
+          'Difference between House & Rental Rates (in dollars)' in Y-axis and 'State Abbraviations' in X-axis.Critical Question: How does the one time Rental Price Rates differs from annual Rental Price from State-to-State in U.S. in most recent years? 
+              Analysis: The difference between the one time House Price and the annual Rental Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $10000 to $70000 as clearly conveyed by our plot. But a point to be 
+              to be noted is that House is an one time invesment. So for example of state CA (California), the one time house price of about $650000 is profitable for life time living than paying rent every year of about $30000.")
+      
+    }
+    
+  })
 
 }
   

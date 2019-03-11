@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## In U.S. >>>
 
-### As seen from our data analysis and visualizations, the one time **house price** is smaller in almost all U.S. States than the annual **rental cost** rates.
+### As seen and explained from our data analysis and visualizations, the one time **house price** is profitable in almost all U.S. States than the annual **rental cost** rates.
 
 ## In Washington State >>>
 
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Conclusion >>>
 
-### So, the results are clear to you! Now, decide yourself whether you would prefer to buy a house in U.s/in Washington/in Seattle or rent one as per your affordability and interest!
+### So, the results are clear to you! Now, decide yourself whether you would prefer to buy a house in U.S./in Washington/in Seattle or rather rent one as per your affordability and interest!
 
 ### Hope you enjoyed navigating our App! 
 
