@@ -11,7 +11,7 @@ library("RColorBrewer")
 
 source("./our_ui.R")
 
-options(scipen=999)
+options(scipen = 999)
 
 source("./project.R")
 
@@ -34,8 +34,51 @@ output$us_plot <- renderPlot({
     labs(title = "Seattle Housing Rates Compared to National Housing Rates",
          x = "Year",
          y = "Housing Rate (Price in Dollars)")
+  housing_rates
+  } else if (input$data_type == "Rent" && input$var_type == "Rate") {
+    rental_rates <- ggplot(data = rent_national_data, na.rm = T) +
+      geom_line(
+        mapping = aes(x = year, y = monthly_average), 
+        size = 2
+      ) +
+      geom_line(data = rent_seattle_data, na.rm = T,
+                mapping = aes(x = year, y = monthly_average),
+                size = 2
+      ) +
+      labs(title = "Seattle Rental Rates Compared to National Housing Rates",
+           x = "Year",
+           y = "Rental Rate (Price in Dollars)")
+    rental_rates
+  } else if (input$data_type == "House" && input$var_type == "Percentage") {
+    housing_percentage_change <- ggplot(data = house_national_data, na.rm = T) +
+      geom_line(
+        mapping = aes(x = year, y = percent_change), 
+        size = 2
+      ) +
+      geom_line(data = house_seattle_data, na.rm = T,
+                mapping = aes(x = year, y = percent_change),
+                size = 2
+      ) +
+      labs(title = "Percentage Change of Seattle Housing Rate Compared to Percentage Change of National Housing Rates",
+           x = "Year",
+           y = "Percentage Change")
+    housing_percentage_change
+  } else {
+    rental_percentage_change <- ggplot(data = rent_national_data, na.rm = T) +
+      geom_line(
+        mapping = aes(x = year, y = percent_change), 
+        size = 2
+      ) +
+      geom_line(data = rent_seattle_data, na.rm = T,
+                mapping = aes(x = year, y = percent_change),
+                size = 2
+      ) +
+      labs(title = "Percentage Change of Seattle Rental Rates Compared to Percentage Change of National Rental Rates",
+           x = "Year",
+           y = "Percentage Change")
+    rental_percentage_change
   }
-    
+
 })
 
 
