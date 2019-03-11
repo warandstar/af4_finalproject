@@ -3,7 +3,7 @@ library("dplyr")
 library("ggplot2")
 library("maps")
 library("tidyr")
-library("mapproj")
+#library("mapproj")
 library("RColorBrewer")
 #install.packages('devtools')
 
@@ -136,6 +136,55 @@ output$three_plot <- renderPlot({
   }
   
 })
+
+  # Tab2 - summary
+  output$two_summary <- renderPrint({
+    if (input$data_type == "house") {
+    summary(house_seattle_data)
+    } else {
+      summary(rent_seattle_data)
+    }
+  })
+  
+  # Tab2 - plot
+  output$two_plot <- renderPlot({
+      
+    p <- ggplot(data = house_seattle_data, na.rm = TRUE) +
+        geom_line(mapping = aes(x = year, y = input$var_type), 
+                  color = "red",
+                  size = 2) + 
+        labs(
+          title = paste0("Seattle Regional", input$var_type, "Change Over Time for House"),
+          x = "month",
+          y = input$var_type,
+          color = "Changes"
+        ) + 
+        # second line in the same plot 
+        # represents how rate change over time in Seattle  
+        geom_line(data = rent_seattle_data, na.rm = TRUE,
+                  mapping = aes(x = year, y = input$var_type), 
+                  color = "blue")
+    p
+  })
+  
+  # Tab2 - Table 
+  output$two_table <- renderTable({
+    if (input$var_type == "Rate" & input$data_type == "house" ) {
+      user_table <- house_seattle_data %>%
+        select(year, monthly_average)
+      user_table
+    } else if (input$var_type == "Rate" & input$data_type == "rent" ) {
+      user_table <- rent_seattle_data %>%
+        select(year, monthly_average)
+      user_table
+    } else if (input$var_type == "Percentage" & input$data_type == "house") {
+      user_table <- house_seattle_data %>% 
+        select(year, percent_change)
+    } else if (input$var_type == "Percentage" & input$data_type == "rent") {
+      user_table <- rent_seattle_data %>% 
+      select(year, percent_change)
+    }
+  }) # two_table ends here
 
 }
   

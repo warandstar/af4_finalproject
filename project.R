@@ -16,92 +16,85 @@ house_price_data <- house_price_data[ , c(1:7, 183:281)]
 house_national_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   group_by(year) %>%
-  summarize(monthly_average = mean(year_value, na.rm = TRUE))
+  summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+  mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
 rent_national_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
   group_by(year) %>%
-  summarize(monthly_average = mean(year_value, na.rm = TRUE))
-
+  summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+  mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
 
 
 # Seattle Metro (Specifically King County) Data on House and Rent
 
+# function to get other cities' metropolitan data
 
-house_seattle_data
+get_metropolitan_house_data <- function(city) {
+  metro <- house_price_data %>%
+    filter(City == city) %>%
+    select(Metro) %>%
+    pull()
+  metro <- metro[1]
+  
+  result <- house_price_data %>%
+    filter(Metro == metro) %>% 
+    gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
+    group_by(year) %>%
+    summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+    mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  
+  result
+}
 
-rent_seattle_data
+get_metropolitan_rent_data <- function(city) {
+  metro <- rent_price_data %>%
+    filter(City == city) %>%
+    select(Metro) %>%
+    pull()
+  metro <- metro[1]
+  
+  result <- rent_price_data %>%
+    filter(Metro == metro) %>% 
+    gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+    group_by(year) %>%
+    summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+    mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  
+  result
+}
+
+house_seattle_data <- get_metropolitan_house_data("Seattle")
+
+rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
 
 # seattle vs washington comparison data
+# this data is non-seattle-metropolitan data
+house_washington_data <- house_price_data %>%
+  filter(State == "WA") %>%
+  filter(Metro != "Seattle-Tacoma-Bellevue") %>%
+  gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+  mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
-house_washington_data
+rent_washington_data <- rent_price_data %>%
+  filter(State == "WA") %>%
+  filter(Metro != "Seattle-Tacoma-Bellevue") %>%
+  gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
+  mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
-rent_washington_data
+# this is for map
 
-# function to get other cities' metropolitan data
+house_seattle_individual <- house_price_data %>%
+  filter(Metro == "Seattle-Tacoma-Bellevue") %>% 
+  gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7]))
 
-get_metropolitan_data <- function(city) {
-  
-}
-
-
-
-
-
-
-# section 2.3 about sample data set
-# using seattle as example:
-
-house_sample_data <- house_price_data %>%
-  select(RegionID, RegionName, City, State, Metro, CountyName, X2010.11, X2015.11, X2019.01)
-View(house_sample_data)
-
-rent_sample_data <- rent_price_data %>%
-  select(RegionID, RegionName, City, State, Metro, CountyName, X2010.11, X2015.11, X2019.01)
-View(rent_sample_data)
-
-# section 3
-
-# sort the cities by the county to find the main city and its satellite cities
-# it returns column of data about cities and its price change 
-# for seattle the table will have price change and percentage change of seattle, bellevue, kirkland, renton, etc.
-
-house_national_price_change <- house_sample_data %>%
-  summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
-
-rent_national_price_change <- rent_sample_data %>%
-  summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
-
-# get the difference of prices and percent change in house in specific county 
-get_metro_avg_house_change <- function(county, state) {
-  report_house_data <- house_sample_data %>%
-    filter(CountyName == county, State == state) %>%
-    summarize(county_name = county, diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
-  report_house_data
-}
-
-
-# get the difference of prices and percent change in rent in specific county 
-get_state_avg_rent_change <- function(county, state) {
-  report_rent_data <- rent_sample_data %>%
-    filter(CountyName == county, State == state) %>%
-    summarize(county_name = county, diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
-  report_rent_data
-}
-
-
-# get the joint table of price change in specific county
-get_state_avg_change <- function(county, state) {
-  joint_data <- house_sample_data %>%
-    filter(CountyName == county, State == state) %>%
-    left_join(filter(rent_sample_data, CountyName == county, State == state), by = "CountyName", suffix = c(".house", ".rent")) %>%
-    summarize(county = unique(CountyName), 
-              house_2010 = mean(X2019.01.house, na.rm = TRUE), house_2019 = mean(X2010.11.house, na.rm = TRUE), 
-              rent_2010 = mean(X2019.01.rent, na.rm = TRUE), rent_2019 = mean(X2010.11.rent, na.rm = TRUE))
-}
-
-
-
+rent_seattle_individual <- rent_price_data %>%
+  filter(Metro == "Seattle-Tacoma-Bellevue") %>% 
+  gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) 
 
