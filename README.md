@@ -1,8 +1,8 @@
 **Technocrats** Final Project:
 
-Our App will investigate gentrification in Seattle compared to gentrification on a national level. Gentrification is when older neighborhoods are renovated to improve the overall quality of a neighborhood. This results in increased housing prices in those gentrified areas. Gentrification is a controversial topic because increased demand for the housing in the gentrified areas inevitably leads to increased housing prices, which can result in the displacement of lower-income residents who are unable to afford the increased housing and rental costs. Although the quality of life in these neighborhoods may be improved through gentrification, many people feel that the displacement of lower-income families is unfair and problematic.
-
-In order to better understand the effects of gentrification in Seattle versus gentrification on a national level, we will be analyzing data on the changes in housing and monthly rental prices from 2010-2019 in Seattle, and compare that with changes in housing and monthly rental prices from 2010-2019 on a national level.
+It’s no secret that housing and rental price rates in all over the United States is a SERIOUS matter of stress for everyone living here.
+Through our App Technocrats, you will be able to analyze the Rental and Housing rates in almost all states in U.S.
+And, as student developers of University of Washington (Seattle), we will exclusively allow you to find out whether you will be benefitted by buying a house or rather renting one in your place of residence in WA and in specifically Seattle  as you navigate further through our App!
 
 This App is created by UW students:
 _Jong Tai Kim, Raida Karim, Jeff Tu, Po Hou_
