@@ -25,7 +25,7 @@ rent_national_data <- rent_price_data %>%
   summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
   mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
-
+years <- substring(house_national_data$year, 2, 8)
 
 # Seattle Metro (Specifically King County) Data on House and Rent
 
@@ -88,12 +88,3 @@ rent_washington_data <- rent_price_data %>%
   summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
   mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
-# this is for map
-
-house_seattle_individual <- house_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue") %>% 
-  gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7]))
-
-rent_seattle_individual <- rent_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue") %>% 
-  gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7]))  
