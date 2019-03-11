@@ -6,25 +6,22 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Explore Housing & Rental in U.S. comapring to Seattle"),
-  
+  titlePanel("Technocrats: Should you buy a house or rather rent one to live in any of U.S. States, or in any of WA cities, or specifically in Seattle?
+             Find out with our Technocrats App!"),
+  titlePanel("Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
+
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
     
     # Sidebar panel for inputs ----
     sidebarPanel(
       
-      # Input: textInput ----
-      textInput(inputId = "data_type", label = "Enter 'State-specific' or 'All States'", value = "State-specifc"),
-      
-      # br() element to introduce extra vertical spacing ----
-      br(),
       
       # Input: select input with some choices----
       selectInput(
         inputId = "analysis_var",
         label =  "Choose A Type of Analysis",
-        choices = c("House Price", "Rental Price", "Both")
+        choices = c("House Price", "Rental Price", "Difference")
       )
     ),
     
@@ -33,9 +30,11 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
-                  tabPanel("Seattle & US National Rates", textOutput("one_summary"), tableOutput("one_table"), plotOutput("one_plot")),
-                  tabPanel("House & Rental Rates in Seattle", textOutput("two_summary"), plotOutput("two_plot"), tableOutput("two_table")),
-                  tabPanel("House & Rental Rates in U.S.", plotOutput("three_plot"), textOutput("three_summary")),
+                  tabPanel("Overview", includeHTML("overview.html")),
+                  tabPanel("Rates In U.S.", plotOutput("us_plot"), textOutput("us_summary")),
+                  tabPanel("Rates In Washington", textOutput("wa_summary"), plotOutput("wa_plot")),
+                  tabPanel("Rates In Seattle", textOutput("sea_summary"), plotOutput("sea_plot")),
+                  tabPanel("Results", includeHTML("results.html")),
                   tabPanel("Resources", includeHTML("resource.html")),
                   tabPanel("Developers", includeHTML("author.html")))
       )
