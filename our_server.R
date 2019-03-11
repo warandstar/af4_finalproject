@@ -36,11 +36,6 @@ our_server <- function(input, output) {
 #    price19 <- mean(X2019.01)
 #  )
 
- 
- # getting data from .csv files
- house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
- rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
-  
 # house data
 house_data <- house_price_data %>%
   select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)

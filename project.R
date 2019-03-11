@@ -1,6 +1,3 @@
-#install.packages("httr")
-#install.packages("jsonlite")
-
 library("knitr")
 library("httr")
 library("jsonlite")
@@ -9,7 +6,29 @@ library("dplyr")
 house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
 rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
 
-View(house_price_data)
+# National Data on house and rent price from 2010.11 to 2019.01
+
+house_national_data
+
+rent_national_data
+
+
+house_state_data
+
+rent_state_data
+
+
+
+
+# Seattle Metro (Specifically King County) Data on House and Rent
+
+
+
+
+
+
+
+
 
 # section 2.3 about sample data set
 # using seattle as example:
@@ -31,9 +50,6 @@ View(rent_sample_data)
 house_national_price_change <- house_sample_data %>%
   summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
 
-
-View(house_national_price_change)
-  
 rent_national_price_change <- rent_sample_data %>%
   summarize(diff = round(mean(X2019.01, na.rm = TRUE) - mean(X2010.11, na.rm = TRUE),2), diff_percentage = round(diff / mean(X2010.11, na.rm = TRUE) * 100, 2))
 

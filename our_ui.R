@@ -2,10 +2,6 @@ library("shiny")
 library("dplyr")
 
 
-
-
-
-
 # Define UI for random distribution app ----
 our_ui <- fluidPage(
   

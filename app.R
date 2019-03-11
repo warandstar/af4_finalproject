@@ -7,8 +7,6 @@ library("ggplot2")
 library(rsconnect)
 
 # getting data from .csv files
-house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
-rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
 
 source("our_ui.R")
 source("our_server.R")
