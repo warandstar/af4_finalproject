@@ -21,21 +21,37 @@ our_server <- function(input, output) {
   house_national_data <- reactive({
     data <- house_national_data %>%
       select(year, input$var_type)
+    data
   })
   
   rent_national_data <- reactive({
     data <- rent_national_data %>%
       select(year, input$var_type)
+    data
   })
   
   house_seattle_data <- reactive({
-    data <- house_national_data %>%
+    data <- house_seattle_data %>%
       select(year, input$var_type)
+    data
   })
   
   rent_seattle_data <- reactive({
-    data <- rent_national_data %>%
+    data <- rent_seattle_data %>%
       select(year, input$var_type)
+    data
+  })
+  
+  other_city_house_data <- reactive({
+    data <- get_metropolitan_house_data(input$city) %>%
+      select(year, input$var_type)
+    data
+  })
+  
+  other_city_rent_data <- reactive({
+    data <- get_metropolitan_rent_data(input$city) %>%
+      select(year, input$var_type)
+    data
   })
   
   # Creating plots for housing/rental and rate/percentage
@@ -72,13 +88,36 @@ our_server <- function(input, output) {
   })
 
   
-  other_city_house_data <- reactive({
-    data <- get_metropolitan_house_data(input$city)
-  })
-  
-  other_city_rent_data <- reactive({
-    data <- get_metropolitan_rent_data(input$city)
-    data
+  output$other_city_plot <- renderPlot({
+    if(input$data_type == "House") {
+      housing_rates <- ggplot(data = house_seattle_data(), na.rm = T) +
+        geom_line(
+          mapping = aes(x = year, y = input$var_type), 
+          size = 2
+        ) +
+        geom_line(data = other_city_house_data(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
+                  size = 2
+        ) +
+        labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+             x = "Year",
+             y = "Housing Rate (Price in Dollars)")
+      housing_rates
+    } else {
+      rental_rates <- ggplot(data = house_seattle_data(), na.rm = T) +
+        geom_line(
+          mapping = aes(x = year, y = input$var_type), 
+          size = 2
+        ) +
+        geom_line(data = other_city_rent_data(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
+                  size = 2
+        ) +
+        labs(title = "Seattle Rental Rates Compared to National Housing Rates",
+             x = "Year",
+             y = "Rental Rate (Price in Dollars)")
+      rental_rates
+    } 
   })
   
 
