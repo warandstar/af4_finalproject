@@ -2,20 +2,26 @@ library("knitr")
 library("httr")
 library("jsonlite")
 library("dplyr")
+library("tidyr")
 
 house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
 rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
 
+# we only need data from 2010.11
+
+house_price_data <- house_price_data[ , c(1:7, 183:281)]
+
 # National Data on house and rent price from 2010.11 to 2019.01
 
-house_national_data
+house_national_data <- house_price_data %>%
+  gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(monthly_average = mean(year_value, na.rm = TRUE))
 
-rent_national_data
-
-
-house_state_data
-
-rent_state_data
+rent_national_data <- rent_price_data %>%
+  gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(monthly_average = mean(year_value, na.rm = TRUE))
 
 
 
@@ -23,7 +29,22 @@ rent_state_data
 # Seattle Metro (Specifically King County) Data on House and Rent
 
 
+house_seattle_data
 
+rent_seattle_data
+
+
+# seattle vs washington comparison data
+
+house_washington_data
+
+rent_washington_data
+
+# function to get other cities' metropolitan data
+
+get_metropolitan_data <- function(city) {
+  
+}
 
 
 
