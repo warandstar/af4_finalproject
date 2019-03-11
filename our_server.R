@@ -52,23 +52,9 @@ our_server <- function(input, output) {
     data <- get_metropolitan_rent_data(input$city) %>%
       select(year, input$var_type)
     data
-<<<<<<< HEAD
   })
   
-  other_city_house_data <- reactive({
-    data <- get_metropolitan_house_data(input$city) %>%
-      select(year, input$var_type)
-    data
-  })
-  
-  other_city_rent_data <- reactive({
-    data <- get_metropolitan_rent_data(input$city) %>%
-      select(year, input$var_type)
-    data
-=======
->>>>>>> jongtai
-  })
-  
+
   # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
     if(input$data_type == "House") {
@@ -102,10 +88,6 @@ our_server <- function(input, output) {
     } 
   })
 
-  
-<<<<<<< HEAD
-
-=======
   output$other_city_plot <- renderPlot({
     if(input$data_type == "House") {
       housing_rates <- ggplot(data = house_seattle_data(), na.rm = T) +
@@ -137,7 +119,6 @@ our_server <- function(input, output) {
       rental_rates
     } 
   })
->>>>>>> jongtai
   
 
 
