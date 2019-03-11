@@ -6,7 +6,8 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Explore Housing & Rental in U.S. comapring to Seattle"),
+  titlePanel("Should you buy a house or rent one to live in any of U.S. States or especially in Seattle?
+             Find Out with our Technocrats App!"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -33,6 +34,7 @@ our_ui <- fluidPage(
       
       # Output: Tabset w/ plot w/ summary, and table w/ summary ----
       tabsetPanel(type = "tabs",
+                  tabPanel("Overview", includeHTML("overview.html")),
                   tabPanel("Seattle & US National Rates", textOutput("one_summary"), tableOutput("one_table"), plotOutput("one_plot")),
                   tabPanel("House & Rental Rates in Seattle", textOutput("two_summary"), plotOutput("two_plot"), tableOutput("two_table")),
                   tabPanel("House & Rental Rates in U.S.", plotOutput("three_plot"), textOutput("three_summary")),

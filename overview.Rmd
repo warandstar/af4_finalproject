@@ -1,0 +1,15 @@
+---
+title: ''
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### It's no secret that housing and rental cost rates in all over the United States is a SERIOUS matter of stress for everyone living here.
+
+### Through our app **Technocrats** you will be able to analyze the Rental and Housing rates in almost all states in U.S. 
+### And, as student developers of _University of Washington (Seattle)_, we will exclusively allow to to find out whether you wiill be benefitted by buying a house or renting one in your place of residence in U.S as you navigate further through our App!
+
+## So, WELCOME! Let's get started >>>>>
