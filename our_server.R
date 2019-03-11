@@ -17,7 +17,18 @@ source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output) {
-
+  
+  other_city_house_data <- reactive({
+    data <- get_metropolitan_house_data(input$city)
+  })
+  
+  other_city_rent_data <- reactive({
+    data <- get_metropolitan_rent_data(input$city)
+    data
+  })
+  
+  
+  
   output$three_plot <- renderPlot({
     
     if(input$analysis_var == "Both" && input$data_type == "All States") {
@@ -66,5 +77,8 @@ our_server <- function(input, output) {
     }
   })
 
+  
+  output$other_city_plot <- renderPlot({
+  })
 }
   
