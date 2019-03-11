@@ -9,10 +9,11 @@ library("RColorBrewer")
 
 #devtools::install_github("UrbanInstitute/urbnmapr")
 
-source("our_ui.R")
+source("./our_ui.R")
 
 options(scipen=999)
 
+source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output) {
