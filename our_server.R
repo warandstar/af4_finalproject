@@ -45,7 +45,7 @@ house_only <- house_price_data %>%
 
 h_only <- gather(house_only, year, cost, -State)
 
-house_price_summary <- h_only%>%
+house_price_summary <- h_only %>%
   group_by(State) %>%
   summarize(
     House_Price = mean(cost)
@@ -54,7 +54,7 @@ house_price_summary <- h_only%>%
 
 # rent
 rent_data <- rent_price_data %>%
-select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
+  select(RegionID, RegionName, City, State, Metro, CountyName, X2015.01, X2017.01, X2019.01)
 
 rent_only <- rent_price_data %>% 
   select(State, X2015.01, X2016.01, X2017.01, X2018.01, X2019.01)
@@ -66,7 +66,6 @@ rent_price_summary <- r_only%>%
   summarize(
     Rental_Price = mean(cost)
   )
-
 
 # state house data
 state_house_data <- house_data %>%
@@ -81,19 +80,38 @@ combined_house_rent <- left_join(state_house_data, state_rent_data, by = "State"
 # change colnames
 colnames(combined_house_rent) <- c("State", "House", "Rental")
 
-state_summary <- combined_house_rent%>%
+state_summary <- combined_house_rent %>%
   group_by(State) %>%
   summarize(
     House_Price = mean(House),
     Rental_Price = mean(Rental)
   )
 
+output$one_plot <- renderPlot({
+  if(input$data_type == "House" && input$var_type == "Rate") {
+    housing_rates <- ggplot(data = house_national_data, na.rm = T) +
+      geom_line(
+        mapping = aes(x = year, y = monthly_average), 
+        size = 2
+      ) +
+      geom_line(data = house_seattle_data, na.rm = T,
+                mapping = aes(x = year, y = monthly_average),
+                size = 2
+      ) +
+    labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+         x = "Year",
+         y = "Housing Rate (Price in Dollars)")
+  }
+    
+})
+
+
 output$three_plot <- renderPlot({
   
   if(input$analysis_var == "Both" && input$data_type == "All States") {
-  both_plot <-  ggplot(data = state_summary, na.rm = F) +
+  both_plot <-  ggplot(data = state_summary, na.rm = ) +
     geom_jitter(
-      mapping = aes(x= House_Price, y= Rental_Price, color = State), # thinly stroked
+      mapping = aes(x = House_Price, y = Rental_Price, color = State), # thinly stroked
       size = 3
     ) + 
     # Add title and axis labels
@@ -134,8 +152,6 @@ output$three_plot <- renderPlot({
       ) 
     rent_plot
   }
-  
 })
-
 }
   

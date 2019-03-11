@@ -6,7 +6,7 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Explore Housing & Rental in U.S. comapring to Seattle"),
+  titlePanel("Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
   
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
