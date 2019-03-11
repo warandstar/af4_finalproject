@@ -18,6 +18,8 @@ house_national_data <- house_price_data %>%
   group_by(year) %>%
   summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
   mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
 rent_national_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
@@ -25,7 +27,10 @@ rent_national_data <- rent_price_data %>%
   summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
   mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
 
+  summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
+years <- substring(house_national_data$year, 2, 8)
 
 # Seattle Metro (Specifically King County) Data on House and Rent
 
@@ -37,13 +42,21 @@ get_metropolitan_house_data <- function(city) {
     select(Metro) %>%
     pull()
   metro <- metro[1]
-  
+
   result <- house_price_data %>%
     filter(Metro == metro) %>% 
     gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
     group_by(year) %>%
     summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
     mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+  
+
+  result <- house_price_data %>%
+    filter(Metro == metro) %>% 
+    gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
+    group_by(year) %>%
+    summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+    mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
   
   result
 }
@@ -68,7 +81,13 @@ get_metropolitan_rent_data <- function(city) {
 house_seattle_data <- get_metropolitan_house_data("Seattle")
 
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
+    summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+    mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
+  
+  result
 
+
+house_seattle_data <- get_metropolitan_house_data("Seattle")
 
 # seattle vs washington comparison data
 # this data is non-seattle-metropolitan data
@@ -87,6 +106,7 @@ rent_washington_data <- rent_price_data %>%
   group_by(year) %>%
   summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
   mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
+rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
 # this is for map
 
@@ -97,4 +117,22 @@ house_seattle_individual <- house_price_data %>%
 rent_seattle_individual <- rent_price_data %>%
   filter(Metro == "Seattle-Tacoma-Bellevue") %>% 
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) 
+
+# seattle vs washington comparison data
+# this data is non-seattle-metropolitan data
+house_washington_data <- house_price_data %>%
+  filter(State == "WA") %>%
+  filter(Metro != "Seattle-Tacoma-Bellevue") %>%
+  gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
+
+rent_washington_data <- rent_price_data %>%
+  filter(State == "WA") %>%
+  filter(Metro != "Seattle-Tacoma-Bellevue") %>%
+  gather(key = year, value = year_value, -c(colnames(rent_price_data)[1:7])) %>%
+  group_by(year) %>%
+  summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
+  mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
