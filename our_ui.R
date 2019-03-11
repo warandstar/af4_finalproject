@@ -6,7 +6,7 @@ library("dplyr")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Should you buy a house or rent one to live in any of U.S. States or especially in Seattle?
+  titlePanel("Technocrats: Should you buy a house or rather rent one to live in any of U.S. States, or in any of WA cities, or specifically in Seattle?
              Find out with our Technocrats App!"),
   
   # Sidebar layout with input and output definitions ----
