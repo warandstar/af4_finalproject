@@ -7,7 +7,7 @@ source("./project.R")
 our_ui <- fluidPage(
   
   # App title ----
-  titlePanel("Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
+  titlePanel("Explore Housing & Rental Prices in the U.S. compared to Seattle"),
 
 
   # Sidebar layout with input and output definitions ----
