@@ -9,7 +9,6 @@ our_ui <- fluidPage(
   # App title ----
   titlePanel("Technocrats: Should you buy a house or rather rent one to live in any of U.S. States, or in any of WA cities, or specifically in Seattle?
              Find out with our Technocrats App!"),
-  titlePanel("Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
 
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
