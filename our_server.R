@@ -27,7 +27,7 @@ our_server <- function(input, output) {
     }
     data
   })
-
+  
   
   seattle_data_reactive <- reactive({
     data <- 0
@@ -63,9 +63,9 @@ our_server <- function(input, output) {
       data <- data[, c("year", input$var_type)]
     }
     data
-
+    
   })
-
+  
   washington_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -75,8 +75,8 @@ our_server <- function(input, output) {
     }
     data
   })
-
-
+  
+  
   # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
       rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
@@ -94,7 +94,7 @@ our_server <- function(input, output) {
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
            y = "Housing Rate")
-      rates
+    rates
   })
   
   # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
@@ -142,8 +142,9 @@ our_server <- function(input, output) {
   }) # two_table ends here
   
   
-  # Creating plots for seattle/wa and rate/percentage
+  # Tab 3 - Creating plots for seattle/wa and rate/percentage
   output$washington_plot <- renderPlot({
+<<<<<<< HEAD
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1), 
@@ -161,9 +162,7 @@ our_server <- function(input, output) {
     rates
   })
   
-  
-
-  
+  # Tab 4
   output$other_city_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
@@ -180,9 +179,59 @@ our_server <- function(input, output) {
     rates
   })
   
+  # Construct a function that returns a color based on the data
+  # Colors are taken from the ColorBrewer Set3 palette
+  if (input$data_type == "House") {
 
+  palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
 
-
+  } else {
+    palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
+  }
+  
+  # Map
+  output$map <- renderLeaflet ({
+    # Create a Leaflet map of new building construction by category
+    if (input$data_type == "House") {
+      leaflet(data =  house_seattle_data_reactive()) %>%
+        addProviderTiles("CartoDB.Positron") %>%
+        setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
+        addCircles(
+          lat = -122.3321, # specify the column for `lat` as a formula
+          lng = 47.6062, # specify the column for `lng` as a formula
+          stroke = FALSE, # remove border from each circle 
+          color = ~palette_fn(input$var_type), # a "function of" the palette mapping
+          radius = 20,
+          fillOpacity = 0.5
+        ) %>%
+        addLegend(
+          position = "bottomright",
+          title = paste0(input$var_type, "of House Price in Seattle"),
+          pal = palette_fn, # the palette to label
+          values = ~input$var_type, # the values to label
+          opacity = 1
+        ) } else {
+          leaflet(data =  rent_seattle_data_reactive()) %>%
+            addProviderTiles("CartoDB.Positron") %>%
+            setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
+            addCircles(
+              lat = -122.3321, # specify the column for `lat` as a formula
+              lng = 47.6062, # specify the column for `lng` as a formula
+              stroke = FALSE, # remove border from each circle
+              color = ~palette_fn(input$var_type), # palette mapping
+              radius = 20,
+              fillOpacity = 0.5
+            ) %>%
+            addLegend(
+              position = "bottomright",
+              title = paste0(input$var_type, "of Rental Price in Seattle"),
+              pal = palette_fn, # the palette to label
+              values = ~input$var_type, # the values to label
+              opacity = 1
+            )
+        }
+  })
+  
   output$us_summary <- renderText({
     if(input$data_type == "House") {
       paste0("This visualization demonstrates the rates of ", input$var_type, " (in dollars) for almost each state in U.S. by deploying the 'House Price (in dollars)' in 
@@ -196,8 +245,7 @@ our_server <- function(input, output) {
     }
     
   })
-
-
-
-}
   
+  
+  
+}

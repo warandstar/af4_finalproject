@@ -11,7 +11,6 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
 
-
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
@@ -91,7 +90,6 @@ house_seattle_data <- get_metropolitan_house_data("Seattle")
 
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
-
 # this is for map
 
 house_seattle_individual <- house_price_data %>%
@@ -121,4 +119,5 @@ rent_washington_data <- rent_price_data %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
 rent_washington_data[, "Percentage"] = c(0, 100 * (log(rent_washington_data$Rate[2:10]) - log(rent_washington_data$Rate[1:9])))
+
 
