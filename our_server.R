@@ -66,7 +66,7 @@ our_server <- function(input, output) {
         ) +
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
-           y = "Housing Rate (Price in Dollars)")
+           y = "Housing Rate")
       housing_rates
     } else {
       rental_rates <- ggplot(data = rent_national_data_reactive(), na.rm = T) +
@@ -80,7 +80,7 @@ our_server <- function(input, output) {
         ) +
         labs(title = "Seattle Rental Rates Compared to National Housing Rates",
              x = "Year",
-             y = "Rental Rate (Price in Dollars)")
+             y = "Rental Rate")
        rental_rates
     } 
   })
