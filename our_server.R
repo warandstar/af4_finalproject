@@ -6,8 +6,11 @@ library("tidyr")
 #library("mapproj")
 library("RColorBrewer")
 #install.packages('devtools')
-
+#install.packages("leaflet")
+library("leaflet")
 #devtools::install_github("UrbanInstitute/urbnmapr")
+#install.packages("mapdata")
+library("mapdata")
 
 source("./our_ui.R")
 
@@ -107,13 +110,13 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-      geom_line(mapping = aes_string(x = "year", y = input$var_type), 
+      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
                 color = "red",
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
-                mapping = aes_string(x = "year", y = input$var_type), 
+                mapping = aes_string(x = "year", y = input$var_type, group = 1), 
                 color = "blue") + 
       labs(
         title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
@@ -182,7 +185,15 @@ our_server <- function(input, output) {
     
   })
 
+  output$map = renderLeaflet({
+    m <- leaflet() %>% 
+      addProviderTiles("OpenStreetMap.BlackAndWhite") # %>%
+      #addPolygons(data = world[world$lifeExp < input])
+    
+    
+  })
+
+}  # our_server.R ends here
 
 
-}
   
