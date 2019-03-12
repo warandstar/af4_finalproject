@@ -166,17 +166,17 @@ our_server <- function(input, output) {
            y = "Housing Rate")
     rates
   })
-  
-  # Construct a function that returns a color based on the data
-  # Colors are taken from the ColorBrewer Set3 palette
-  if (input$data_type == "House") {
-    palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
-  } else {
-    palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
-  }
-  
+ 
   # Map
   output$map <- renderLeaflet ({
+    # Construct a function that returns a color based on the data
+    # Colors are taken from the ColorBrewer Set3 palette
+    if (input$data_type == "House") {
+      palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
+    } else {
+      palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
+    }
+    
     # Create a Leaflet map of new building construction by category
     if (input$data_type == "House") {
       leaflet(data =  house_seattle_data_reactive()) %>%
