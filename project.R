@@ -10,9 +10,8 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 # we only need data from 2010.11
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
+View(house_price_data)
 
-<<<<<<< HEAD
-=======
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
@@ -24,7 +23,7 @@ rent_price_data <- rent_price_data %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
   mutate(year = year, month = as.integer(month))
->>>>>>> d2136cec743520e46f4e17e9b85a23a9a03f0666
+
 
 # National Data on house and rent price from 2010.11 to 2019.01
 
