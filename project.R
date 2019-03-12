@@ -10,6 +10,7 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 # we only need data from 2010.11
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
+View(house_price_data)
 
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
