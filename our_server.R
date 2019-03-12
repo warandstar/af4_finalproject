@@ -47,15 +47,18 @@ our_server <- function(input, output) {
   
   rent_seattle_data_reactive <- reactive({
     data <- rent_seattle_data[, c("year", input$var_type)]
+    View(data)
     data
   })
   
   other_city_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
+      print("House")
       data <- get_metropolitan_house_data(input$city)
       data <- data[, c("year", input$var_type)]
     } else {
+      print("rent")
       data <- get_metropolitan_rent_data(input$city)
       data <- data[, c("year", input$var_type)]
     }
@@ -76,14 +79,17 @@ our_server <- function(input, output) {
   
   # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
-    rates <- ggplot(data = national_data_reactive(), na.rm = T) +
+    rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
       geom_line(
-        mapping = aes_string(x = "year", y = input$var_type), 
-        size = 2
+        mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+        size = 2,
+        color = "black"
       ) +
-      geom_line(data = seattle_data_reactive(), na.rm = T,
-                mapping = aes_string(x = "year", y = input$var_type),
-                size = 2
+      geom_line(
+        data = seattle_data_reactive(), na.rm = TRUE,
+        mapping = aes_string(x = "year", y = input$var_type, group = 1),
+        size = 2,
+        color = "red"
       ) +
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
@@ -107,17 +113,19 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-      geom_line(mapping = aes_string(x = "year", y = input$var_type), 
-                color = "red",
+      geom_line(
+        mapping = aes_string(x = "year", y = input$var_type, group = 1),
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
-                mapping = aes_string(x = "year", y = input$var_type), 
-                color = "blue") + 
+                mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+                size = 2) + 
+      scale_x_continuous() + 
+      scale_y_continuous() +
       labs(
         title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
-        x = "month",
+        x = "year",
         y = input$var_type,
         color = "Changes"
       ) 
@@ -125,30 +133,33 @@ our_server <- function(input, output) {
   }) #two_plot ends here
   
   # Tab2 - Table 
-  # returns two tables 
+  # returns one table representing either rate or percent change for both 
   output$seattle_table <- renderTable({
-    if (input$data_type == "House") {
-      house_seattle_data_reactive
-    } else if (input$var_type == "Rent") {
-      rent_seattle_data_reactive
-    } 
+      table_one <- house_seattle_data_reactive()
+      table_two <- rent_seattle_data_reactive()
+    table <- left_join(table_one, table_two, year)
+    table
   }) # two_table ends here
   
   
   # Tab 3 - Creating plots for seattle/wa and rate/percentage
   output$washington_plot <- renderPlot({
-    rates <- ggplot(data = seattle_data_reactive(), na.rm = TRUE) + # basic graphical object
-      geom_line(aes_string(x = "year", y = input$var_type), colour="black") +  # first layer
-      geom_line(data = washington_data_reactive(), na.rm = TRUE, aes_string(x = "year", y = input$var_type), colour="red") +  # second layer
-      labs(title = "Seattle Housing Rates Compared to Washington State Housing Rates",
+    rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
+      geom_point(
+        mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+        size = 2,
+        color = "black"
+      ) +
+      geom_point(data = washington_data_reactive(), na.rm = T,
+                mapping = aes_string(x = "year", y = input$var_type, group = 1),
+                size = 2,
+                color = "red"
+      ) +
+      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
-           y = "Housing Rate (Price in Dollars)")
+           y = "Housing Rate")
     rates
   })
-  
-  View(seattle_data_reactive)
-  
-  
   
   # Tab 4
   output$other_city_plot <- renderPlot({
@@ -166,13 +177,17 @@ our_server <- function(input, output) {
            y = "Housing Rate")
     rates
   })
- 
+  
+  # Construct a function that returns a color based on the data
+  # Colors are taken from the ColorBrewer Set3 palette
+  
+  
   # Map
   output$map <- renderLeaflet ({
-    # Construct a function that returns a color based on the data
-    # Colors are taken from the ColorBrewer Set3 palette
+    palette_fn <- 0
     if (input$data_type == "House") {
       palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
+      
     } else {
       palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
     }
@@ -217,9 +232,6 @@ our_server <- function(input, output) {
             )
         }
   })
-  
-  
-  
   
   output$us_summary <- renderText({
     if(input$data_type == "House") {

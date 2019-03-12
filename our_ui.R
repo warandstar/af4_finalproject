@@ -184,4 +184,5 @@ our_ui <- navbarPage("Seattle Gentrification",
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )
-) # our_ui.R ends here
+
+)
