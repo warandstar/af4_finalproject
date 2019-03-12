@@ -11,6 +11,7 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
 
+
 # National Data on house and rent price from 2010.11 to 2019.01
 
 house_national_data <- house_price_data %>%
@@ -66,8 +67,12 @@ get_metropolitan_rent_data <- function(city) {
 }
 
 house_seattle_data <- get_metropolitan_house_data("Seattle")
+get_seattle_house_rates <- select(house_seattle_data, year, Rate)
+get_seattle_house_percentage <- select(house_seattle_data, year, Percentage)
 
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
+get_seattle_rent_rates <- select(rent_seattle_data, year, Rate)
+get_seattle_rent_percentage <- select(rent_seattle_data, year, Percentage)
 
 
 # seattle vs washington comparison data
@@ -79,6 +84,9 @@ house_washington_data <- house_price_data %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
+get_washington_house_rates <- select(house_washington_data, year, Rate)
+get_washington_house_percentage <- select(house_washington_data, year, Percentage)
+
 
 rent_washington_data <- rent_price_data %>%
   filter(State == "WA") %>%
@@ -87,4 +95,17 @@ rent_washington_data <- rent_price_data %>%
   group_by(year) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
+get_washington_rent_rates <- select(rent_washington_data, year, Rate)
+get_washington_rent_percentage <- select(rent_washington_data, year, Percentage)
 
+get_house_percentage <- left_join(get_seattle_house_percentage, get_washington_house_percentage, by = "year")
+colnames(get_house_percentage) <- c("Year", "Seattle_Percentage", "WA_Percentage")
+
+get_house_rates <- left_join(get_seattle_house_rates, get_washington_house_rates, by = "year")
+colnames(get_house_rates) <- c("Year", "Seattle_Rate", "WA_Rate")
+
+get_rent_percentage <- left_join(get_seattle_rent_percentage, get_washington_rent_percentage, by = "year")
+colnames(get_rent_percentage) <- c("Year", "Seattle_Percentage", "WA_Percentage")
+
+get_rent_rates <- left_join(get_seattle_rent_rates, get_washington_rent_rates, by = "year")
+colnames(get_rent_rates) <- c("Year", "Seattle_Rate", "WA_Rate")
