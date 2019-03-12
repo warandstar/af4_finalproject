@@ -31,11 +31,6 @@ our_server <- function(input, output) {
     data
   })
 
-  
-<<<<<<< HEAD
-=======
-  
->>>>>>> master
   seattle_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -67,15 +62,10 @@ our_server <- function(input, output) {
       data <- data[, c("year", input$var_type)]
     }
     data
-<<<<<<< HEAD
-
   })
 
-=======
-    
-  })
   
->>>>>>> master
+
   washington_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -85,7 +75,6 @@ our_server <- function(input, output) {
     }
     data
   })
-<<<<<<< HEAD
 
 
   # Creating plots for housing/rental and rate/percentage
@@ -103,7 +92,7 @@ our_server <- function(input, output) {
            x = "Year",
            y = "Values")
       rates
-=======
+  })
   
   
   # Creating plots for housing/rental and rate/percentage
@@ -121,7 +110,6 @@ our_server <- function(input, output) {
            x = "Year",
            y = "Housing Rate")
     rates
->>>>>>> master
   })
   
   # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
@@ -140,22 +128,12 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-<<<<<<< HEAD
-      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-=======
-      geom_line(mapping = aes_string(x = "year", y = input$var_type), 
->>>>>>> master
-                color = "red",
-                size = 2) + 
-      # second line in the same plot 
+      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1)) +
+      
+                  # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
-<<<<<<< HEAD
-                mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-=======
-                mapping = aes_string(x = "year", y = input$var_type), 
->>>>>>> master
-                color = "blue") + 
+                mapping = aes_string(x = "year", y = input$var_type, group = 1)) +
       labs(
         title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
         x = "month",
@@ -174,7 +152,7 @@ our_server <- function(input, output) {
       rent_seattle_data_reactive
     } 
   }) # two_table ends here
-<<<<<<< HEAD
+
   
   
   # Creating plots for seattle/wa and rate/percentage
@@ -232,12 +210,8 @@ our_server <- function(input, output) {
     
   })
 
-}  # our_server.R ends here
 
 
-=======
->>>>>>> master
-  
   
   # Tab 3 - Creating plots for seattle/wa and rate/percentage
   output$washington_plot <- renderPlot({
@@ -291,7 +265,7 @@ our_server <- function(input, output) {
           lng = 47.6062, # specify the column for `lng` as a formula
           stroke = FALSE, # remove border from each circle 
           color = ~palette_fn(input$var_type), # a "function of" the palette mapping
-          radius = 20,
+          radius = 1,
           fillOpacity = 0.5
         ) %>%
         addLegend(
@@ -309,7 +283,7 @@ our_server <- function(input, output) {
               lng = 47.6062, # specify the column for `lng` as a formula
               stroke = FALSE, # remove border from each circle
               color = ~palette_fn(input$var_type), # palette mapping
-              radius = 20,
+              radius = 1,
               fillOpacity = 0.5
             ) %>%
             addLegend(
@@ -320,10 +294,8 @@ our_server <- function(input, output) {
               opacity = 1
             )
         }
+        #dev.off() 
   })
-  
-  
-  
   
   output$us_summary <- renderText({
     if(input$data_type == "House") {
@@ -339,6 +311,4 @@ our_server <- function(input, output) {
     
   })
   
-  
-  
-}
+} # our_server.R ends here
