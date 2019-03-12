@@ -135,54 +135,47 @@ our_server <- function(input, output) {
   })
 
 
-  # Tab2 - summary
+  # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
   output$two_summary <- renderPrint({
-    if (input$data_type == "house") {
-    summary(house_seattle_data)
+    if (input$data_type == "House") {
+    summary(house_seattle_data_reactive)
     } else {
-      summary(rent_seattle_data)
+      summary(rent_seattle_data_reactive)
     }
   })
   
   # Tab2 - plot
+  # returns line plots between which the red plot represents data of house listings
+  # in Seattle in terms of either Rate or Percent_Change depending on user's input
+  # and the blue plot represents data of rent in Seattle also in in terms of either 
+  # Rate or percent_change depending on user's input. 
   output$two_plot <- renderPlot({
-      
-    p <- ggplot(data = house_seattle_data, na.rm = TRUE) +
+    p <- ggplot(data = house_seattle_data_reactive, na.rm = TRUE) +
         geom_line(mapping = aes(x = year, y = input$var_type), 
                   color = "red",
                   size = 2) + 
+        # second line in the same plot 
+        # represents how rate change over time in Seattle  
+        geom_line(data = rent_seattle_data_reactive, na.rm = TRUE,
+                  mapping = aes(x = year, y = input$var_type), 
+                  color = "blue") + 
         labs(
           title = paste0("Seattle Regional", input$var_type, "Change Over Time for House"),
           x = "month",
           y = input$var_type,
           color = "Changes"
-        ) + 
-        # second line in the same plot 
-        # represents how rate change over time in Seattle  
-        geom_line(data = rent_seattle_data, na.rm = TRUE,
-                  mapping = aes(x = year, y = input$var_type), 
-                  color = "blue")
+      ) 
     p
-  })
+  }) #two_plot ends here
   
   # Tab2 - Table 
+  # returns two tables 
   output$two_table <- renderTable({
-    if (input$var_type == "Rate" & input$data_type == "house" ) {
-      user_table <- house_seattle_data %>%
-        select(year, monthly_average)
-      user_table
-    } else if (input$var_type == "Rate" & input$data_type == "rent" ) {
-      user_table <- rent_seattle_data %>%
-        select(year, monthly_average)
-      user_table
-    } else if (input$var_type == "Percentage" & input$data_type == "house") {
-      user_table <- house_seattle_data %>% 
-        select(year, percent_change)
-    } else if (input$var_type == "Percentage" & input$data_type == "rent") {
-      user_table <- rent_seattle_data %>% 
-      select(year, percent_change)
-    }
+    if (input$data_type == "House") {
+      house_seattle_data_reactive
+    } else if (input$var_type == "Rent") {
+      rent_seattle_data_reactive
+    } 
   }) # two_table ends here
-
 }
   

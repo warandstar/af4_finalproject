@@ -74,7 +74,6 @@ our_ui <- fluidPage(
                        )
       )
       
-      
     ),
     
     # Main panel for displaying outputs ----
