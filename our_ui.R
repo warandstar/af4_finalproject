@@ -36,63 +36,68 @@ our_ui <- navbarPage("Seattle Gentrification",
 
 # Define UI for random distribution app ----
   tabPanel(title = "vs National",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
-               ),
-               
-               radioButtons(
-                 inputId = "data_type",
-                 label =  "Choose A Type of Data",
-                 choices = c("House", "Rent"),
-                 selected = "House"
-               ),
-               
-               mainPanel(
-                 plotOutput("us_plot")
-               )
+           fluidPage(
+             sidebarLayout(
+              sidebarPanel(
+                 radioButtons(
+                   inputId = "var_type",
+                   label = "Choose Rate or Percentage Change",
+                   choices = c("Rate", "Percentage"),
+                   selected = "Rate"
+                 ),
+                 
+                 radioButtons(
+                   inputId = "data_type",
+                   label =  "Choose A Type of Data",
+                   choices = c("House", "Rent"),
+                   selected = "House"
+                )
+              ),
+              
+              mainPanel(
+                plotOutput("us_plot")
+              )
              )
            )
   ),
   
   
   tabPanel(title = "trend",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons(
+                   inputId = "var_type",
+                   label = "Choose Rate or Percentage Change",
+                   choices = c("Rate", "Percentage"),
+                   selected = "Rate"
+                 )
                ),
-               
+                 
                mainPanel(
                  plotOutput("us_plot2")
                )
              )
            )
-           
   ),
   
   tabPanel(title = "vs other Washington",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
-               ),
-               
-               radioButtons(
-                 inputId = "data_type",
-                 label =  "Choose A Type of Data",
-                 choices = c("House", "Rent"),
-                 selected = "House"
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons(
+                   inputId = "var_type",
+                   label = "Choose Rate or Percentage Change",
+                   choices = c("Rate", "Percentage"),
+                   selected = "Rate"
+                 ),
+                 
+                 radioButtons(
+                   inputId = "data_type",
+                   label =  "Choose A Type of Data",
+                   choices = c("House", "Rent"),
+                   selected = "House"
+                 )
                ),
                
                mainPanel(
@@ -104,29 +109,31 @@ our_ui <- navbarPage("Seattle Gentrification",
   
   
   tabPanel(title = "vs other cities",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
-               ),
-               
-               radioButtons(
-                 inputId = "data_type",
-                 label =  "Choose A Type of Data",
-                 choices = c("House", "Rent"),
-                 selected = "House"
-               ),
-               
-               selectInput(
-                 inputId = "city",
-                 label = "Choose A City",
-                 choices = c("San Francisco", "New York", "Chicago", "Houston", "Washington", "Charlotte"), 
-                 selected = "San Francisco"
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons(
+                   inputId = "var_type",
+                   label = "Choose Rate or Percentage Change",
+                   choices = c("Rate", "Percentage"),
+                   selected = "Rate"
+                 ),
                  
-               ), 
+                 radioButtons(
+                   inputId = "data_type",
+                   label =  "Choose A Type of Data",
+                   choices = c("House", "Rent"),
+                   selected = "House"
+                 ),
+                 
+                 selectInput(
+                   inputId = "city",
+                   label = "Choose A City",
+                   choices = c("San Francisco", "New York", "Chicago", "Houston", "Washington", "Charlotte"), 
+                   selected = "San Francisco"
+                   
+                 )
+               ),
                
                mainPanel(
                  plotOutput("other_city_plot")
@@ -136,69 +143,38 @@ our_ui <- navbarPage("Seattle Gentrification",
            
   ),
   
-  tabPanel(title = "Map 1",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
-               ),
-               
-               radioButtons(
-                 inputId = "data_type",
-                 label =  "Choose A Type of Data",
-                 choices = c("House", "Rent"),
-                 selected = "House"
-               ),
-               
-               selectInput(
-                 inputId = "year",
-                 label = "Choose Year and Month",
-                 choices = years,
-                 selected = years[1]
-               ), 
+  tabPanel(title = "Map",
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 radioButtons(
+                   inputId = "var_type",
+                   label = "Choose Rate or Percentage Change",
+                   choices = c("Rate", "Percentage"),
+                   selected = "Rate"
+                 ),
+                 
+                 radioButtons(
+                   inputId = "data_type",
+                   label =  "Choose A Type of Data",
+                   choices = c("House", "Rent"),
+                   selected = "House"
+                 ),
+                 
+                 selectInput(
+                   inputId = "year",
+                   label = "Choose Year and Month",
+                   choices = years,
+                   selected = years[1]
+                 )
+              ),
                
                mainPanel(
-                 plotOutput("map1")
+                 plotOutput("map")
                )
              )
            )
   ),
-  
-  tabPanel(title = "Map 2",
-           fluidRow(
-             sidebarPanel(
-               radioButtons(
-                 inputId = "var_type",
-                 label = "Choose Rate or Percentage Change",
-                 choices = c("Rate", "Percentage"),
-                 selected = "Rate"
-               ),
-               
-               radioButtons(
-                 inputId = "data_type",
-                 label =  "Choose A Type of Data",
-                 choices = c("House", "Rent"),
-                 selected = "House"
-               ),
-               
-               selectInput(
-                 inputId = "year",
-                 label = "Choose Year and Month",
-                 choices = years,
-                 selected = years[1]
-               ), 
-               
-               mainPanel(
-                 plotOutput("map2")
-               )
-             )
-           )
-           
-  ),
-  
   
   tabPanel(title = "Resources", 
            includeHTML("resource.html")
