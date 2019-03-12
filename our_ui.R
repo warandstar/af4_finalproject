@@ -213,5 +213,5 @@ our_ui <- fluidPage(
   tabPanel(title = "Authors", 
            includeHTML("author.html")
            )
-
+    )
 )

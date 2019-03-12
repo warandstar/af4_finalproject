@@ -11,8 +11,6 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
 
-<<<<<<< HEAD
-=======
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
@@ -24,7 +22,7 @@ rent_price_data <- rent_price_data %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
   mutate(year = year, month = as.integer(month))
->>>>>>> d2136cec743520e46f4e17e9b85a23a9a03f0666
+
 
 # National Data on house and rent price from 2010.11 to 2019.01
 
@@ -92,7 +90,6 @@ house_seattle_data <- get_metropolitan_house_data("Seattle")
 
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
-<<<<<<< HEAD
 house_seattle_data <- get_metropolitan_house_data("Seattle")
 get_seattle_house_rates <- select(house_seattle_data, year, Rate)
 get_seattle_house_percentage <- select(house_seattle_data, year, Percentage)
@@ -175,3 +172,4 @@ rent_washington_data[, "Percentage"] = c(0, 100 * (log(rent_washington_data$Rate
 
 get_rent_rates <- left_join(get_seattle_rent_rates, get_washington_rent_rates, by = "year")
 colnames(get_rent_rates) <- c("Year", "Seattle_Rate", "WA_Rate")
+
