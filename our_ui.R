@@ -14,6 +14,7 @@ library("dplyr")
 source("./project.R")
 
 our_ui <- navbarPage("Seattle Gentrification",
+
   tabPanel(title = "Intro",
            titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
            
