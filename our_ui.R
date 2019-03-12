@@ -36,12 +36,9 @@ our_ui <- navbarPage("Seattle Gentrification",
 
 # Define UI for random distribution app ----
 our_ui <- fluidPage(
-<<<<<<< HEAD
   
   # App title ----
   titlePanel("Explore Housing & Rental Prices in the U.S. compared to Seattle"),
-=======
->>>>>>> ce48df8fcf70693e5639f55bac22d881f92bcccb
 
   tabPanel(title = "vs National",
            fluidRow(
