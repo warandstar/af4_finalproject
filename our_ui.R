@@ -1,6 +1,16 @@
 library("shiny")
 library("dplyr")
 
+# tab 1 will have visualization of house and rent data of 
+# seattle and national level (compare) and user can choose between 
+# house price and rent price as well as between price in dollars and percentage change
+
+# tab 2 will have the seattle region's change over time for rent and house (?)
+
+# tab 3 will have data and map of the seattle price level on each year 
+# based on user's selection
+# tab 4 will compare seattle with other region such as SF
+
 source("./project.R")
 
 our_ui <- navbarPage("Seattle Gentrification",
@@ -23,8 +33,8 @@ our_ui <- navbarPage("Seattle Gentrification",
            
            p("We will present the map as well.")
   ),
-  
 
+# Define UI for random distribution app ----
   tabPanel(title = "vs National",
            fluidRow(
              sidebarPanel(
@@ -192,9 +202,10 @@ our_ui <- navbarPage("Seattle Gentrification",
   
   tabPanel(title = "Resources", 
            includeHTML("resource.html")
-           ),
+  ),
   
   tabPanel(title = "Authors", 
            includeHTML("author.html")
            )
+
 )
