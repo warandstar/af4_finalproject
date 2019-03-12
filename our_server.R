@@ -176,17 +176,16 @@ our_server <- function(input, output) {
   }
   
   # Map
-  output$map <- renderLeaflet ({ 
+  output$map <- renderLeaflet ({
     # Create a Leaflet map of new building construction by category
     if (input$data_type == "House") {
     leaflet(data =  house_seattle_data_reactive()) %>%
     addProviderTiles("CartoDB.Positron") %>%
     setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
     addCircles(
-      lat = ~Latitude, # specify the column for `lat` as a formula
-      lng = ~Longitude, # specify the column for `lng` as a formula
-      stroke = FALSE, # remove border from each circle
-      popup = ~Description, # show the description in a popup
+      lat = -122.3321, # specify the column for `lat` as a formula
+      lng = 47.6062, # specify the column for `lng` as a formula
+      stroke = FALSE, # remove border from each circle 
       color = ~palette_fn(input$var_type), # a "function of" the palette mapping
       radius = 20,
       fillOpacity = 0.5
@@ -202,10 +201,9 @@ our_server <- function(input, output) {
         addProviderTiles("CartoDB.Positron") %>%
         setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
         addCircles(
-          lat = ~Latitude, # specify the column for `lat` as a formula
-          lng = ~Longitude, # specify the column for `lng` as a formula
+          lat = -122.3321, # specify the column for `lat` as a formula
+          lng = 47.6062, # specify the column for `lng` as a formula
           stroke = FALSE, # remove border from each circle
-          popup = ~Description, # show the description in a popup
           color = ~palette_fn(input$var_type), # palette mapping
           radius = 20,
           fillOpacity = 0.5
