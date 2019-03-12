@@ -84,6 +84,45 @@ our_server <- function(input, output) {
        rental_rates
     } 
   })
+  
+  # Creating plots for seattle/wa and rate/percentage
+  output$three_plot <- renderPlot({
+    if(input$data_type == "House" && input$var_type == "Rate") {
+      get_housing_rates <- ggplot(get_house_rates, aes(Year)) + # basic graphical object
+        geom_line(aes(y=Seattle_Rate), colour="red") +  # first layer
+        geom_line(aes(y=WA_Rate), colour="green") +  # second layer
+        labs(title = "Seattle Housing Rates Compared to Washington State Housing Rates",
+             x = "Year",
+             y = "Housing Rate (Price in Dollars)")
+     get_housing_rates
+    } else if (input$data_type == "House" && input$var_type == "Percentage") {
+      get_housing_percentage <- ggplot(get_house_percentage, aes(Year)) + # basic graphical object
+        geom_line(aes(y=Seattle_Percentage), colour="red") +  # first layer
+        geom_line(aes(y=WA_Percentage), colour="green") +  # second layer
+        labs(title = "Seattle Housing Percentage Compared to Washington State Housing Rates",
+             x = "Year",
+             y = "Housing Rate (Percentage)")
+      get_housing_percentage
+    } else if (input$data_type == "Rent" && input$var_type == "Percentage") {
+      get_rental_percentage <- ggplot(get_rent_percentage, aes(Year)) + # basic graphical object
+        geom_line(aes(y=Seattle_Rate), colour="red") +  # first layer
+        geom_line(aes(y=WA_Rate), colour="green") +  # second layer
+        labs(title = "Seattle Rental Percentage Compared to Washington State Housing Rates",
+             x = "Year",
+             y = "Rental Rate (Percentage)")
+      get_rental_percentage
+    } else {
+      get_rental_rates <- ggplot(get_rent_rates, aes(Year)) + # basic graphical object
+        geom_line(aes(y=Seattle_Rate), colour="red") +  # first layer
+        geom_line(aes(y=WA_Rate), colour="green") +  # second layer
+        labs(title = "Seattle Housing Rates Compared to Washington State Housing Rates",
+             x = "Year",
+             y = "Rental Rate (Price in Dollars)")
+      get_housing_rates
+    }
+  })
+  
+  
 
   
   output$other_city_plot <- renderPlot({
