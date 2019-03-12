@@ -213,9 +213,7 @@ our_ui <- fluidPage(
   
   tabPanel(title = "Authors", 
            includeHTML("author.html")
-           )
-    )
-)
+           ),
 
                      tabPanel(title = "Intro",
                               titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
@@ -386,6 +384,6 @@ our_ui <- fluidPage(
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )
-                     
+          )             
 )
 

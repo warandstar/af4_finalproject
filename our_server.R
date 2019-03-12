@@ -135,7 +135,7 @@ our_server <- function(input, output) {
   }) # two_table ends here
   
   
-  # Creating plots for seattle/wa and rate/percentage
+  # Tab 3 - Creating plots for seattle/wa and rate/percentage
   output$washington_plot <- renderPlot({
       rates <- ggplot(data = seattle_data_reactive(), na.rm = TRUE) + # basic graphical object
         geom_line(aes_string(x = "year", y = input$var_type), colour="black") +  # first layer
@@ -146,9 +146,11 @@ our_server <- function(input, output) {
      rates
   })
   
+  View(seattle_data_reactive)
+  
   
 
-  
+  # Tab 4
   output$other_city_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
@@ -163,6 +165,59 @@ our_server <- function(input, output) {
            x = "Year",
            y = "Housing Rate")
     rates
+  })
+  
+  # Construct a function that returns a color based on the data
+  # Colors are taken from the ColorBrewer Set3 palette
+  if (input$data_type == "House") {
+  palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
+  } else {
+    palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
+  }
+  
+  # Map
+  output$map <- renderLeaflet ({ 
+    # Create a Leaflet map of new building construction by category
+    if (input$data_type == "House") {
+    leaflet(data =  house_seattle_data_reactive()) %>%
+    addProviderTiles("CartoDB.Positron") %>%
+    setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
+    addCircles(
+      lat = ~Latitude, # specify the column for `lat` as a formula
+      lng = ~Longitude, # specify the column for `lng` as a formula
+      stroke = FALSE, # remove border from each circle
+      popup = ~Description, # show the description in a popup
+      color = ~palette_fn(input$var_type), # a "function of" the palette mapping
+      radius = 20,
+      fillOpacity = 0.5
+    ) %>%
+    addLegend(
+      position = "bottomright",
+      title = paste0(input$var_type, "of House Price in Seattle"),
+      pal = palette_fn, # the palette to label
+      values = ~input$var_type, # the values to label
+      opacity = 1
+    ) } else {
+      leaflet(data =  rent_seattle_data_reactive()) %>%
+        addProviderTiles("CartoDB.Positron") %>%
+        setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
+        addCircles(
+          lat = ~Latitude, # specify the column for `lat` as a formula
+          lng = ~Longitude, # specify the column for `lng` as a formula
+          stroke = FALSE, # remove border from each circle
+          popup = ~Description, # show the description in a popup
+          color = ~palette_fn(input$var_type), # palette mapping
+          radius = 20,
+          fillOpacity = 0.5
+        ) %>%
+        addLegend(
+          position = "bottomright",
+          title = paste0(input$var_type, "of Rental Price in Seattle"),
+          pal = palette_fn, # the palette to label
+          values = ~input$var_type, # the values to label
+          opacity = 1
+        )
+    }
   })
   
 
