@@ -32,4 +32,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ![JongTai Kim](./img/img_jongtai.png){width=200px}
 
+<<<<<<< HEAD
 ![Amber Hou](./img/IMG_Amber.jpg){width=150px}
+=======
+![Amber Hou](./img/IMG_Amber.jpg){width=200px}
+>>>>>>> master
