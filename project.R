@@ -23,6 +23,8 @@ rent_price_data <- rent_price_data %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
   mutate(year = year, month = as.integer(month))
 
+years <- 2010:2019
+months = 1:12
 # National Data on house and rent price from 2010.11 to 2019.01
 
 house_national_data <- house_price_data %>%
@@ -37,7 +39,6 @@ rent_national_data <- rent_price_data %>%
 
 rent_national_data[, "Percentage"] = c(0, 100 * (log(rent_national_data$Rate[2:99]) - log(rent_national_data$Rate[1:98])))
 
-years <- substring(house_national_data$year, 2, 8)
 
 # Seattle Metro (Specifically King County) Data on House and Rent
 
@@ -49,14 +50,6 @@ get_metropolitan_house_data <- function(city) {
     select(Metro) %>%
     pull()
   metro <- metro[1]
-
-  result <- house_price_data %>%
-    filter(Metro == metro) %>% 
-    gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
-    group_by(year) %>%
-    summarize(monthly_average = mean(year_value, na.rm = TRUE)) %>%
-    mutate(percent_change = c(0, 100 * (log(monthly_average[2:99]) - log(monthly_average[1:98]))))
-  
 
   result <- house_price_data %>%
     filter(Metro == metro) %>%

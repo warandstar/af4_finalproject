@@ -90,11 +90,11 @@ our_server <- function(input, output) {
     if(input$data_type == "House") {
       housing_rates <- ggplot(data = house_seattle_data_reactive(), na.rm = T) +
         geom_line(
-          mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type), 
+          mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type, group = 1), 
           size = 2
         ) +
         geom_line(data = other_city_house_data_reactive(), na.rm = T,
-                  mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type),
+                  mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type, group = 1),
                   size = 2
         ) +
         labs(title = "Seattle Housing Rates Compared to National Housing Rates",
@@ -104,11 +104,11 @@ our_server <- function(input, output) {
     } else {
       rental_rates <- ggplot(data = house_seattle_data_reactive(), na.rm = T) +
         geom_line(
-          mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type), 
+          mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type, group = 1), 
           size = 2
         ) +
         geom_line(data = other_city_rent_data_reactive(), na.rm = T,
-                  mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type),
+                  mapping = aes(x = interaction(year, month, lex.order = TRUE), y = input$var_type, group = 1),
                   size = 2
         ) +
         labs(title = "Seattle Rental Rates Compared to National Housing Rates",
