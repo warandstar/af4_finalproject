@@ -136,3 +136,7 @@ rent_washington_data <- rent_price_data %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   mutate(Percentage = c(0, 100 * (log(Rate[2:99]) - log(Rate[1:98]))))
 
+
+# map 
+map('state', regions = c('Washington'))
+
