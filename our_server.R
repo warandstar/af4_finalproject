@@ -11,38 +11,110 @@ library("RColorBrewer")
 
 source("./our_ui.R")
 
-options(scipen=999)
+options(scipen = 999)
 
 source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output) {
   
-# Creating plots for housing/rental and rate/percentage
+  house_national_data_reactive <- reactive({
+    data <- house_national_data[, c("year", input$var_type)]
+    data
+  })
+  
+  rent_national_data_reactive <- reactive({
+    data <- rent_national_data[, c("year", input$var_type)]
+    data
+  })
+  
+  house_seattle_data_reactive <- reactive({
+    data <- house_seattle_data[, c("year", input$var_type)]
+    data
+  })
+  
+  rent_seattle_data_reactive <- reactive({
+    data <- rent_seattle_data[, c("year", input$var_type)]
+    data
+  })
+  
+  other_city_house_data_reactive <- reactive({
+    print(input$var_type)
+    data <- get_metropolitan_house_data(input$city)
+    data <- data[, c("year", input$var_type)]
+    data
+  })
+  
+  other_city_rent_data_reactive <- reactive({
+    data <- get_metropolitan_rent_data(input$city)
+    data <- data[, c("year", input$var_type)]
+    data
+  })
+  
+
+  # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
-    if(input$data_type == "House" && input$var_type == "Rate") {
-      housing_rates <- ggplot(data = house_national_data, na.rm = T) +
+    if(input$data_type == "House") {
+      housing_rates <- ggplot(data = house_national_data_reactive(), na.rm = T) +
         geom_line(
-          mapping = aes(x = year, y = monthly_average), 
+          mapping = aes(x = year, y = input$var_type), 
           size = 2
         ) +
-        geom_line(data = house_seattle_data, na.rm = T,
-                  mapping = aes(x = year, y = monthly_average),
+        geom_line(data = house_seattle_data_reactive(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
                   size = 2
         ) +
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
            y = "Housing Rate (Price in Dollars)")
-    }
+      housing_rates
+    } else {
+      rental_rates <- ggplot(data = rent_national_data_reactive(), na.rm = T) +
+        geom_line(
+          mapping = aes(x = year, y = input$var_type), 
+          size = 2
+        ) +
+        geom_line(data = rent_seattle_data_reactive(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
+                  size = 2
+        ) +
+        labs(title = "Seattle Rental Rates Compared to National Housing Rates",
+             x = "Year",
+             y = "Rental Rate (Price in Dollars)")
+       rental_rates
+    } 
   })
-  
-  other_city_house_data <- reactive({
-    data <- get_metropolitan_house_data(input$city)
-  })
-  
-  other_city_rent_data <- reactive({
-    data <- get_metropolitan_rent_data(input$city)
-    data
+
+  output$other_city_plot <- renderPlot({
+    if(input$data_type == "House") {
+      housing_rates <- ggplot(data = house_seattle_data_reactive(), na.rm = T) +
+        geom_line(
+          mapping = aes(x = year, y = input$var_type), 
+          size = 2
+        ) +
+        geom_line(data = other_city_house_data_reactive(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
+                  size = 2
+        ) +
+        labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+             x = "Year",
+             y = "Housing Rate (Price in Dollars)")
+      housing_rates
+    } else {
+      rental_rates <- ggplot(data = house_seattle_data_reactive(), na.rm = T) +
+        geom_line(
+          mapping = aes(x = year, y = input$var_type), 
+          size = 2
+        ) +
+        geom_line(data = other_city_rent_data_reactive(), na.rm = T,
+                  mapping = aes(x = year, y = input$var_type),
+                  size = 2
+        ) +
+        labs(title = "Seattle Rental Rates Compared to National Housing Rates",
+             x = "Year",
+             y = "Rental Rate (Price in Dollars)")
+      rental_rates
+    } 
   })
   
 
