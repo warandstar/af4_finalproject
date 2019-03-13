@@ -1,9 +1,7 @@
 library("shiny")
 library("dplyr")
 library("ggplot2")
-library("maps")
 library("tidyr")
-library("leaflet")
 library("RColorBrewer")
 
 source("./our_ui.R")
