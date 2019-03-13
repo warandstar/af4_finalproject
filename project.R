@@ -87,7 +87,6 @@ get_metropolitan_rent_data <- function(city) {
 }
 
 house_seattle_data <- get_metropolitan_house_data("Seattle")
-
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
 # this is for map

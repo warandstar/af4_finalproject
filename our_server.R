@@ -4,11 +4,7 @@ library("ggplot2")
 library("maps")
 library("tidyr")
 library("leaflet")
-#library("mapproj")
 library("RColorBrewer")
-#install.packages('devtools')
-
-#devtools::install_github("UrbanInstitute/urbnmapr")
 
 source("./our_ui.R")
 

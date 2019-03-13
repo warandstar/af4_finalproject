@@ -11,8 +11,6 @@ library("dplyr")
 # based on user's selection
 # tab 4 will compare seattle with other region such as SF
 
-source("./project.R")
-
 our_ui <- navbarPage("Seattle Gentrification",
                      tabPanel(title = "Intro",
                               titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
@@ -75,6 +73,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
+                                    dataTableOutput("seattle_table"),
                                     plotOutput("seattle_plot")
                                   )
                                 )
@@ -164,8 +163,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                     selectInput(
                                       inputId = "year",
                                       label = "Choose Year and Month",
-                                      choices = years,
-                                      selected = years[1]
+                                      choices = 2010:2019,
+                                      selected = 2010
                                     )
                                   ),
                                   
@@ -183,5 +182,5 @@ our_ui <- navbarPage("Seattle Gentrification",
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )
-                     
+
 )
