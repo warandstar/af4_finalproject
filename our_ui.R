@@ -38,7 +38,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("us_plot")
+                                    plotOutput("us_plot"),
+                                    textOutput("us_summary")
                                   )
                                 )
                               )
@@ -58,8 +59,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    dataTableOutput("seattle_table"),
-                                    plotOutput("seattle_plot")
+                                    plotOutput("seattle_plot"),
+                                    textOutput("seattle_summary")
                                   )
                                 )
                               )
@@ -85,7 +86,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("washington_plot")
+                                    plotOutput("washington_plot"),
+                                    textOutput("washington_summary")
                                   )
                                 )
                               )
@@ -120,7 +122,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("other_city_plot")
+                                    plotOutput("other_city_plot"),
+                                    textOutput("other_city_summary")
                                   )
                                 )
                               )
