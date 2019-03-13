@@ -76,7 +76,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    dataTableOutput("seattle_table"),
+                                    #tableOutput("seattle_table"),
                                     plotOutput("seattle_plot")
                                   )
                                 )

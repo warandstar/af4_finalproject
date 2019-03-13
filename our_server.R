@@ -135,7 +135,7 @@ our_server <- function(input, output) {
       scale_x_continuous() + 
       scale_y_continuous() +
       labs(
-        title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
+        title = paste("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
         x = "year",
         y = input$var_type
       ) 
