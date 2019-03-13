@@ -175,6 +175,10 @@ our_ui <- navbarPage("Seattle Gentrification",
                               )
                      ),
                      
+                     tabPanel(title = "Conclusion", 
+                              includeHTML("conclusion.html")
+                     ),
+                     
                      tabPanel(title = "Resources", 
                               includeHTML("resource.html")
                      ),
