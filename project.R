@@ -89,25 +89,6 @@ get_metropolitan_rent_data <- function(city) {
 house_seattle_data <- get_metropolitan_house_data("Seattle")
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
-# this is for map
-
-house_seattle_individual <- house_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue") %>%
-  group_by(RegionName, year, month) %>%
-  summarize(city = City, Rate = mean(year_value, na.rm = TRUE)) %>%
-  group_by(RegionName, year) %>%
-  summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
-
-house_seattle_individual[, "Percentage"] = c(0, 100 * (log(house_seattle_individual$Rate[2:10]) - log(house_seattle_individual$Rate[1:9])))
-
-rent_seattle_individual <- rent_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue") %>%
-  group_by(RegionName, year, month) %>%
-  summarize(city = City, Rate = mean(year_value, na.rm = TRUE)) %>%
-  group_by(RegionName, year) %>%
-  summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
-rent_seattle_individual[, "Percentage"] = c(0, 100 * (log(rent_seattle_individual$Rate[2:10]) - log(rent_seattle_individual$Rate[1:9])))
-
 # seattle vs washington comparison data
 # this data is non-seattle-metropolitan data
 house_washington_data <- house_price_data %>%

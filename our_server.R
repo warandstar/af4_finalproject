@@ -145,21 +145,7 @@ our_server <- function(input, output, session) {
     }
     data
   })
-  
-  # The reactive data of seattle's data of either price or percentage of either house or rent for each ZIP codes
-  seattle_individual <- reactive({
-    data <- 0
-    if (input$data_type == "House") {
-      data <- house_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
-    } else {
-      data <- rent_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
-    }
-    
-    data <- data %>%
-      filter(year == input$year)
-    data
-  })
-  
+
   # Tab 1
   # Creating plots for housing/rental and rate/percentage of Seattle and National level
   # housing/rental and rate/percentage are chosen by users by interactive sidebars.
@@ -184,9 +170,49 @@ our_server <- function(input, output, session) {
   
   # summary of the plot on Seattle and National Data
   output$us_summary <- renderText({
+    if(input$data_type == "House") {
+      data_seattle <- house_seattle_data
+      data_nation <- house_national_data
+    } else {
+      data_seattle <- rent_seattle_data
+      data_nation <- rent_national_data
+    }
+    
+    seattle_2012 <- data_seattle %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    seattle_2018 <- data_seattle %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+
+    nation_2012 <- data_nation %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    nation_2018 <- data_nation %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+   
+    seattle_2012 <- round(seattle_2012, 2)
+    seattle_2018 <- round(seattle_2018, 2)
+    
+    nation_2012 <- round(nation_2012, 2)
+    nation_2018 <- round(nation_2018, 2)
+    
+    change_seattle <- round((log(seattle_2018) - log(seattle_2012)) * 100, 2)
+    change_nation <- round((log(nation_2018) - log(nation_2012)) * 100, 2)
+    
     paste0("This visualization demonstrates ", input$var_type, " of prices over the years Seattle and National Level. ", 
-           "Thus, the answer to this question, we can clearly see that the rapid increase from 2012 to 2017 in ",
-           "Seattle compared to national level.")
+           "Thus, the answer to this question of seattle increasing more rapidly than national, ",
+           "we can clearly see that the rapid increase from 2012 to 2018 Seattle compared to national level. ",
+           "For instance, from 2012 to 2018, for price of ", input$data_type, " in Seattle increased from $", seattle_2012, 
+           " to $", seattle_2018, ", which is ", change_seattle, "%, meanwhile as nationwide increased from $", 
+           nation_2012, " to $", nation_2018, ", which is ", change_nation, "%")
       
   })
   
@@ -198,7 +224,7 @@ our_server <- function(input, output, session) {
   # and the blue plot represents data of rent in Seattle also in in terms of either 
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
-    p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
+    rates <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
       geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
                 color = "red",
                 size = 2) + 
@@ -213,13 +239,47 @@ our_server <- function(input, output, session) {
         x = "Year",
         y = paste0(input$data_type, " ", input$var_type)
       ) 
-    p
+    rates
   })
   
   # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
   output$seattle_summary <- renderText({
+    data_rent <- rent_seattle_data
+    data_house <- house_seattle_data
+    
+    house_2012 <- data_house %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    house_2018 <- data_house %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    house_2012 <- round(house_2012, 2)
+    house_2018 <- round(house_2018, 2)
+    
+    change_house <- round((log(house_2018) - log(house_2012)) * 100, 2)
+    
+    rent_2012 <- data_rent %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    rent_2018 <- data_rent %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    rent_2012 <- round(rent_2012, 2)
+    rent_2018 <- round(rent_2018, 2)
+    
+    change_rent <- round((log(rent_2018) - log(rent_2012)) * 100, 2)
+    
     paste0("This visualization portrays the ", input$var_type, " of the prices of both houses and rents.", 
-           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2017.")
+           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2018.",
+           "For instance, from 2012 to 2018, for price of house in Seattle increased from $", house_2012, 
+           " to $", house_2018, ", which is ", change_house, "%, meanwhile the price of rent increased from $", 
+           rent_2012, " to $", rent_2018, ", which is ", change_rent, "%")
   })
   
   # Tab 3 - Creating plots for rate/percentage of housing/rental for Seattle and Washington outside of Seattle
@@ -244,10 +304,48 @@ our_server <- function(input, output, session) {
   
   # create the summary of plot of washington and seattle data
   output$washington_summary <- renderText({
+    if(input$data_type == "House") {
+      data_seattle <- house_seattle_data
+      data_washington <- house_washington_data
+    } else {
+      data_seattle <- rent_seattle_data
+      data_washington <- rent_washington_data
+    }
+    seattle_2012 <- data_seattle %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    seattle_2018 <- data_seattle %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    seattle_2012 <- round(seattle_2012, 2)
+    seattle_2018 <- round(seattle_2018, 2)
+    
+    change_seattle <- round((log(seattle_2018) - log(seattle_2012)) * 100, 2)
+    
+    washington_2012 <- data_washington %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    washington_2018 <- data_washington %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    washington_2012 <- round(washington_2012, 2)
+    washington_2018 <- round(washington_2018, 2)
+    
+    change_washington <- round((log(washington_2018) - log(washington_2012)) * 100, 2)
+    
     paste0("This visualization portrays the ", input$var_type, "of prices of", input$data_type, 
            "in Seattle area and Washington state outside of Seattle area. ", 
-           "Thus, The data shows that the trends of sharp increase from 2012 and 2017 is true but ", 
-           "the Seattle area has more rapid increase compared to other Washington State cities")
+           "As seen above, the data shows that the trends of sharp increase from 2012 and 2017 is true but ", 
+           "the Seattle area has more rapid increase compared to other Washington State cities",
+           "For instance, from 2012 to 2018, for price of ", input$data_type, " in Seattle increased from $", seattle_2012, 
+           " to $", seattle_2018, ", which is ", change_seattle, "%, meanwhile in washington state outside of Seattle area",
+           "increased from $", washington_2012, " to $", washington_2018, ", which is ", change_washington, "%")
   })
   
   # Tab 4
@@ -273,44 +371,53 @@ our_server <- function(input, output, session) {
   
   # create the summary of plot of seattle and other city data
   output$other_city_summary <- renderText({
+    if(input$data_type == "House") {
+      data_seattle <- house_seattle_data
+      data_other_city <- get_metropolitan_house_data(input$city)
+    } else {
+      data_seattle <- rent_seattle_data
+      data_other_city <- get_metropolitan_rent_data(input$city)
+    }
+    
+    seattle_2012 <- data_seattle %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    seattle_2018 <- data_seattle %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    seattle_2012 <- round(seattle_2012, 2)
+    seattle_2018 <- round(seattle_2018, 2)
+    
+    change_seattle <- round((log(seattle_2018) - log(seattle_2012)) * 100, 2)
+    
+    other_city_2012 <- data_other_city %>% 
+      filter(year == 2012) %>% 
+      select(Rate) %>%
+      pull()
+    
+    other_city_2018 <- data_other_city %>% 
+      filter(year == 2018) %>% 
+      select(Rate) %>%
+      pull()
+    other_city_2012 <- round(other_city_2012, 2)
+    other_city_2018 <- round(other_city_2018, 2)
+    
+    change_other_city <- round((log(other_city_2018) - log(other_city_2012)) * 100, 2)
+    
     paste0("This visualization shows the ", input$var_type, " of the prices of ", input$data_type, " in ",
            "Seattle Area and ", input$city, " Area. ", 
-           "Overall, the result shows that Seattle is one of cities with sharp increase in prices!")
+           "Overall, the result shows that Seattle is one of cities with sharp increase in prices!",
+           "For instance, from 2012 to 2018, for price of ", input$data_type, " in Seattle increased from $", seattle_2012, 
+           " to $", seattle_2018, ", which is ", change_seattle, "%, meanwhile in ", input$city, " area increased from $", 
+           other_city_2012, " to $", other_city_2018, ", which is ", change_other_city, "%")
   })
   
   # Construct a function that returns a color based on the data
   # Colors are taken from the ColorBrewer Set3 palette
 
-  
-  # Map
-  # Create interactive map which you can see the housing/rental rate/percentage data of the regions of seattle area
-  # housing/rental and rate/percentage are based on user's choice
-  output$map <- renderLeaflet ({
-    palette_fn <- colorFactor(palette = "Set3", domain = seattle_individual())
-    
-    # Create a Leaflet map of new building construction by category
-      leaflet(data =  seattle_individual()) %>%
-        addProviderTiles("CartoDB.Positron") %>%
-        setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
-        addCircles(
-          lat = -122.3321, # specify the column for `lat` as a formula
-          lng = 47.6062, # specify the column for `lng` as a formula
-          stroke = FALSE, # remove border from each circle 
-          color = ~palette_fn(input$var_type), # a "function of" the palette mapping
-          radius = 20,
-          fillOpacity = 0.5
-        ) %>%
-        addLegend(
-          position = "bottomright",
-          title = paste(input$var_type, "of", input$data_type, "Price in Seattle"),
-          pal = palette_fn, # the palette to label
-          values = ~input$var_type, # the values to label
-          opacity = 1
-        ) 
-  })
-  
-  
-  
-  
+
   
 }
