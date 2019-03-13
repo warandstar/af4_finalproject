@@ -36,28 +36,34 @@ rent_price_data <- rent_price_data %>%
 years <- 2010:2019
 
 # Create a data frame from house_price_data that contains a summary table
-# of National Mean of house price 
+# of national mean of house prices in the U.S
 house_national_data <- house_price_data %>%
   group_by(year, month) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+# some math to get the percent change of house_national_data, which is the national mean of house listings, in year and the year before
 house_national_data[, "Percentage"] = c(0, 100 * (log(house_national_data$Rate[2:10]) - log(house_national_data$Rate[1:9])))
 
+# Create a data frame called rent_national_data from rent_price_data that 
+# contains a summary table of national mean of house prices in the U.S
 rent_national_data <- rent_price_data %>%
   group_by(year, month) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+# some math to get the percent change of rent_national_data, which is the national mean of rent, in year and the year before
 rent_national_data[, "Percentage"] = c(0, 100 * (log(rent_national_data$Rate[2:10]) - log(rent_national_data$Rate[1:9])))
 
 
-# Seattle Metro (Specifically King County) Data on House and Rent
+## Seattle Metro (Specifically King County) Data on House and Rent
 
-# function to get other cities' metropolitan data
-
+# this function takes in an input city and filter 
+# house_price_data to get all relevant data of the the metropolitan
+# area in which the input city locates and then it 
+# returns a mean summary of house listing data of that metropolitan 
 get_metropolitan_house_data <- function(city) {
   metro <- house_price_data %>%
     filter(City == city) %>%
@@ -77,6 +83,10 @@ get_metropolitan_house_data <- function(city) {
   result
 }
 
+# this function takes in an input city and filter 
+# rent_price_data to get all relevant data of the the metropolitan
+# area in which the input city locates and then it 
+# returns a mean summary of rent data of that metropolitan 
 get_metropolitan_rent_data <- function(city) {
   metro <- rent_price_data %>%
     filter(City == city) %>%
@@ -92,15 +102,21 @@ get_metropolitan_rent_data <- function(city) {
     summarize(Rate = mean(Rate, na.rm = TRUE))
   
   result[, "Percentage"] = c(0, 100 * (log(result$Rate[2:10]) - log(result$Rate[1:9])))
-  
   result
 }
 
+# calls the metropolitan_house_data and get house listing data of 
+# Greater Seattle area and stores the data frame as house_seattle_data 
 house_seattle_data <- get_metropolitan_house_data("Seattle")
+
+# calls the metropolitan_rent_data and get rent data of 
+# Greater Seattle area and stores the data frame as rent_seattle_data 
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
 
-# seattle vs washington comparison data
-# this data is non-seattle-metropolitan data
+
+# makes an house_washington_data by filtering house listing data in 
+# Washington state but outside the Seattle metropolitan for comparisons
+# and ploting
 house_washington_data <- house_price_data %>%
   filter(State == "WA") %>%
   filter(Metro != "Seattle-Tacoma-Bellevue") %>%
@@ -109,8 +125,12 @@ house_washington_data <- house_price_data %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+# math to get the percent change of house_washington_data, which is the state mean of house listings, in year and the year before
 house_washington_data[, "Percentage"] = c(0, 100 * (log(house_washington_data$Rate[2:10]) - log(house_washington_data$Rate[1:9])))
 
+# makes an rent_washington_data by filtering rent data in 
+# Washington state but outside the Seattle metropolitan for comparisons
+# and ploting
 rent_washington_data <- rent_price_data %>%
   filter(State == "WA") %>%
   filter(Metro != "Seattle-Tacoma-Bellevue") %>%
@@ -119,5 +139,6 @@ rent_washington_data <- rent_price_data %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+# math to get the percent change of rent_washington_data, which is the state mean of rent, in year and the year before
 rent_washington_data[, "Percentage"] = c(0, 100 * (log(rent_washington_data$Rate[2:10]) - log(rent_washington_data$Rate[1:9])))
 
