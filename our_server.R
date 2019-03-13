@@ -277,7 +277,8 @@ our_server <- function(input, output, session) {
     change_rent <- round((log(rent_2018) - log(rent_2012)) * 100, 2)
     
     paste0("This visualization portrays the ", input$var_type, " of the prices of both houses and rents.", 
-           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2018.",
+           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2018; ",
+           "especially, house price increases way rapidly than the rental price!",
            "For instance, from 2012 to 2018, for price of house in Seattle increased from $", house_2012, 
            " to $", house_2018, ", which is ", change_house, "%, meanwhile the price of rent increased from $", 
            rent_2012, " to $", rent_2018, ", which is ", change_rent, "%")
