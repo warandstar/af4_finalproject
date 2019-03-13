@@ -11,7 +11,6 @@ rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMul
 
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
 
-
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
@@ -22,7 +21,7 @@ rent_price_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
-  mutate(year = year, month = as.integer(month))
+  mutate(year = as.integer(year), month = as.integer(month))
 
 
 years <- 2010:2019
@@ -88,17 +87,23 @@ get_metropolitan_rent_data <- function(city) {
 }
 
 house_seattle_data <- get_metropolitan_house_data("Seattle")
-
 rent_seattle_data <- get_metropolitan_rent_data("Seattle")
-
 
 # this is for map
 
 house_seattle_individual <- house_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue")
+  filter(Metro == "Seattle-Tacoma-Bellevue") %>%
+  group_by(RegionName, year, month) %>%
+  summarize(city = City, Rate = mean(year_value, na.rm = TRUE)) %>%
+  group_by(RegionName, year) %>%
+  summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
 
 rent_seattle_individual <- rent_price_data %>%
-  filter(Metro == "Seattle-Tacoma-Bellevue")
+  filter(Metro == "Seattle-Tacoma-Bellevue") %>%
+  group_by(RegionName, year, month) %>%
+  summarize(city = City, Rate = mean(year_value, na.rm = TRUE)) %>%
+  group_by(RegionName, year) %>%
+  summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
 
 # seattle vs washington comparison data
 # this data is non-seattle-metropolitan data
@@ -123,6 +128,9 @@ rent_washington_data <- rent_price_data %>%
 rent_washington_data[, "Percentage"] = c(0, 100 * (log(rent_washington_data$Rate[2:10]) - log(rent_washington_data$Rate[1:9])))
 
 
+<<<<<<< HEAD
 # map 
 map('state', regions = c('Washington'))
 
+=======
+>>>>>>> master

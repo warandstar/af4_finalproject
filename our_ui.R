@@ -1,5 +1,6 @@
 library("shiny")
 library("dplyr")
+library("leaflet")
 
 # tab 1 will have visualization of house and rent data of 
 # seattle and national level (compare) and user can choose between 
@@ -75,7 +76,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    dataTableOutput("seattle_table"),
+                                    #tableOutput("seattle_table"),
                                     plotOutput("seattle_plot")
                                   )
                                 )
@@ -171,7 +172,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("map")
+                                    leafletOutput("map", width = "100%", height = 400)
                                   )
                                 )
                               )
@@ -184,4 +185,5 @@ our_ui <- navbarPage("Seattle Gentrification",
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )
-) # our_ui.R ends here
+
+)
