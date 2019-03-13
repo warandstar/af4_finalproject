@@ -1,33 +1,23 @@
 library("shiny")
 library("dplyr")
 
-# tab 0 is introduction, 
-# tab 1 will have visualization of house and rent data of 
-# seattle and national level (compare) and user can choose between 
-# house price and rent price as well as between price in dollars and percentage change
-
-# tab 2 will have the seattle area's change over time for rent and house 
-
-# tab 3 will have data and map of the seattle price level on each year 
-# based on user's selection
-
-# tab 4 will compare seattle with other region such as SF
-
-# tab 5 will be the interactive map
-
-# tab 6 will be the conclusion
-
-# tab 7 will be the resources
-
-# tab 8 will be describing authors
-
+# user interface that the user can filter data that they want to see
 our_ui <- navbarPage("Seattle Gentrification",
+                     
+                     # Tab 0: gives an overview in text of 
+                     # 1) the questions this project is trying to find answers for
+                     # 2) sets of data that this project deals with
+                     # 3) how this project is going to use to the data sets to address 
+                     #   the questions
                      tabPanel(title = "Introduction", 
                               includeHTML("introduction.html")
                      ),
                      
-                     
-                     # Define UI for random distribution app ----
+                     # Tab 1: Comparing Seattle Data with corresponding National Data
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs National",
                               fluidPage(
                                 sidebarLayout(
@@ -55,7 +45,9 @@ our_ui <- navbarPage("Seattle Gentrification",
                               )
                      ),
                      
-                     
+                     # Tab 2: showing two line representations of trends in 
+                     # Seattle house listing AND rent in terms of 
+                     # either Rate or Percentage increase, depending on user's input
                      tabPanel(title = "trend",
                               fluidPage(
                                 sidebarLayout(
@@ -76,6 +68,12 @@ our_ui <- navbarPage("Seattle Gentrification",
                               )
                      ),
                      
+                     # Tab 3: Comparing Seattle Data with corresponding data set of 
+                     # the rest of Washington state
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs other Washington",
                               fluidPage(
                                 sidebarLayout(
@@ -103,7 +101,13 @@ our_ui <- navbarPage("Seattle Gentrification",
                               )
                      ),
                      
-                     
+                     # Tab 4: Comparing Seattle Data with corresponding data set of 
+                     # the other representative cities in the U.S - the user can choose among 
+                     # New York, San Francisco, Chicago, Huston, Washington, Charlotte
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs other cities",
                               fluidPage(
                                 sidebarLayout(
@@ -140,47 +144,23 @@ our_ui <- navbarPage("Seattle Gentrification",
                               
                      ),
                      
-                     tabPanel(title = "Map",
-                              fluidPage(
-                                sidebarLayout(
-                                  sidebarPanel(
-                                    radioButtons(
-                                      inputId = "var_type5",
-                                      label = "Choose Rate or Percentage Change",
-                                      choices = c("Rate", "Percentage"),
-                                      selected = "Rate"
-                                    ),
-                                    
-                                    radioButtons(
-                                      inputId = "data_type5",
-                                      label =  "Choose A Type of Data",
-                                      choices = c("House", "Rent"),
-                                      selected = "House"
-                                    ),
-                                    
-                                    selectInput(
-                                      inputId = "year",
-                                      label = "Choose Year and Month",
-                                      choices = 2010:2019,
-                                      selected = 2010
-                                    )
-                                  ),
-                                  
-                                  mainPanel(
-                                    plotOutput("map") # to do: change that to leaflet!
-                                  )
-                                )
-                              )
-                     ),
-                     
+                     # Tab 5: Conclusion
+                     # includes a conclusion of answers to the questions
+                     # evident by data shown in previous tabs
                      tabPanel(title = "Conclusion", 
                               includeHTML("conclusion.html")
                      ),
                      
+                     # Tab 6: Resources
+                     # cite the resources where the data was read from 
+                     # constrcuted in a R markdown file 
                      tabPanel(title = "Resources", 
                               includeHTML("resource.html")
                      ),
                      
+                     # Tab 7: Authors
+                     # brief introduction of our team memebers
+                     # constrcuted in a R markdown file 
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )

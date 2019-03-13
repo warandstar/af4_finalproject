@@ -6,6 +6,10 @@ library("readr")
 library("knitr")
 library("httr") 
 library("jsonlite")
+<<<<<<< HEAD
+#install.packages("ggrepel")
+=======
+>>>>>>> master
 library("ggrepel")
 library("leaflet")
 library("maps")
@@ -38,6 +42,9 @@ dim(states_maps)
 plot <- ggplot(data = states_maps) + 
   geom_polygon(aes(x = long, y = lat, fill = region, group = group), color = "white") + 
   coord_fixed(1.3) + 
+<<<<<<< HEAD
+  guides(fill=FALSE) # to leave off the color legend
+=======
   guides(fill=FALSE) # to leave off the color legend
 
 
@@ -84,3 +91,4 @@ leaflet(data = cycle_hire) %>%
   addLegend(pal = pal, values = ~nbikes) %>% 
   setView(lng = -0.1, 51.5, zoom = 12) %>% 
   addMiniMap()
+>>>>>>> master

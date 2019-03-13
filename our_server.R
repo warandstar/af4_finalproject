@@ -8,6 +8,7 @@ library("RColorBrewer")
 
 source("./our_ui.R")
 
+
 options(scipen = 999)
 
 source("./project.R")
@@ -132,8 +133,8 @@ our_server <- function(input, output, session) {
     }
   
     data
-    
   })
+
   
   # The reactive data of non-seattle washington's average data of either price or percentage of either house or rent
   washington_data_reactive <- reactive({
@@ -145,6 +146,7 @@ our_server <- function(input, output, session) {
     }
     data
   })
+
   
   # The reactive data of seattle's data of either price or percentage of either house or rent for each ZIP codes
   seattle_individual <- reactive({
@@ -214,7 +216,8 @@ our_server <- function(input, output, session) {
         y = paste0(input$data_type, " ", input$var_type)
       ) 
     p
-  })
+  }) #two_plot ends here
+  
   
   # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
   output$seattle_summary <- renderText({
@@ -297,7 +300,7 @@ our_server <- function(input, output, session) {
           lng = 47.6062, # specify the column for `lng` as a formula
           stroke = FALSE, # remove border from each circle 
           color = ~palette_fn(input$var_type), # a "function of" the palette mapping
-          radius = 20,
+          radius = 1,
           fillOpacity = 0.5
         ) %>%
         addLegend(
@@ -311,6 +314,4 @@ our_server <- function(input, output, session) {
   
   
   
-  
-  
-}
+} # our_server.R ends here

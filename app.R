@@ -7,7 +7,6 @@ library("ggplot2")
 library(rsconnect)
 
 # getting data from .csv files
-
 source("our_ui.R")
 source("our_server.R")
 
