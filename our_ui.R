@@ -65,7 +65,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type2",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
@@ -85,14 +85,14 @@ our_ui <- navbarPage("Seattle Gentrification",
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type3",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
                                     ),
                                     
                                     radioButtons(
-                                      inputId = "data_type",
+                                      inputId = "data_type3",
                                       label =  "Choose A Type of Data",
                                       choices = c("House", "Rent"),
                                       selected = "House"
@@ -112,14 +112,14 @@ our_ui <- navbarPage("Seattle Gentrification",
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type4",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
                                     ),
                                     
                                     radioButtons(
-                                      inputId = "data_type",
+                                      inputId = "data_type4",
                                       label =  "Choose A Type of Data",
                                       choices = c("House", "Rent"),
                                       selected = "House"
@@ -147,14 +147,14 @@ our_ui <- navbarPage("Seattle Gentrification",
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type5",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
                                     ),
                                     
                                     radioButtons(
-                                      inputId = "data_type",
+                                      inputId = "data_type5",
                                       label =  "Choose A Type of Data",
                                       choices = c("House", "Rent"),
                                       selected = "House"

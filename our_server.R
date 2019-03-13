@@ -13,7 +13,81 @@ options(scipen = 999)
 source("./project.R")
 
 # Define server logic for random distribution app ----
-our_server <- function(input, output) {
+our_server <- function(input, output, session) {
+  observe({
+    print(input$tabs)
+    print(input$var_type)
+    print(input$data_type)
+    print(input$city)
+    print(input$year)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type2
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type3
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type4
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  observe({
+    updated_var_type <- input$var_type5
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type3
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type4
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type5
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+  })
   
   national_data_reactive <- reactive({
     data <- 0
@@ -81,7 +155,7 @@ our_server <- function(input, output) {
     }
     
     data <- data %>%
-      filter(year = input$year)
+      filter(year == input$year)
     data
   })
   
