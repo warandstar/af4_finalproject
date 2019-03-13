@@ -1,6 +1,4 @@
 library("knitr")
-library("httr")
-library("jsonlite")
 library("dplyr")
 library("tidyr") 
 
