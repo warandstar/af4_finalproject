@@ -127,10 +127,3 @@ rent_washington_data <- rent_price_data %>%
 
 rent_washington_data[, "Percentage"] = c(0, 100 * (log(rent_washington_data$Rate[2:10]) - log(rent_washington_data$Rate[1:9])))
 
-
-<<<<<<< HEAD
-# map 
-map('state', regions = c('Washington'))
-
-=======
->>>>>>> master

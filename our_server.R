@@ -3,17 +3,9 @@ library("dplyr")
 library("ggplot2")
 library("maps")
 library("tidyr")
-library("leaflet")
-#library("mapproj")
 library("RColorBrewer")
-#install.packages('devtools')
-#install.packages("leaflet")
 library("leaflet")
-#devtools::install_github("UrbanInstitute/urbnmapr")
-#install.packages("mapdata")
 library("mapdata")
-
-source("./our_ui.R")
 
 options(scipen = 999)
 
@@ -21,7 +13,6 @@ source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output) {
-  
   national_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -111,18 +102,29 @@ our_server <- function(input, output) {
   
   # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
-    rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
+    
+      data <- 0
+      if (input$data_type == "House") {
+        data <- house_national_data[, c("year", input$var_type)]
+      } else {
+        data <- rent_national_data[, c("year", input$var_type)]
+      }
+      data <- data %>%
+        filter(year == input$year)
+      
+    
+    rates <- ggplot(data, na.rm = TRUE) +
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1), 
         size = 2,
         color = "black"
       ) +
-      geom_line(
-        data = seattle_data_reactive(), na.rm = TRUE,
-        mapping = aes_string(x = "year", y = input$var_type, group = 1),
-        size = 2,
-        color = "red"
-      ) +
+      #geom_line(
+        #data = seattle_data_reactive(), na.rm = TRUE,
+        #mapping = aes_string(x = "year", y = input$var_type, group = 1),
+        #size = 2,
+        #color = "red"
+      #) +
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
            y = "Housing Rate")
@@ -145,14 +147,6 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-<<<<<<< HEAD
-      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1)) +
-      
-                  # second line in the same plot 
-      # represents how rate change over time in Seattle  
-      geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
-                mapping = aes_string(x = "year", y = input$var_type, group = 1)) +
-=======
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1),
                 size = 2) + 
@@ -163,7 +157,6 @@ our_server <- function(input, output) {
                 size = 2) + 
       scale_x_continuous() + 
       scale_y_continuous() +
->>>>>>> master
       labs(
         title = paste("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
         x = "year",
@@ -303,31 +296,7 @@ our_server <- function(input, output) {
           pal = palette_fn, # the palette to label
           values = ~input$var_type, # the values to label
           opacity = 1
-<<<<<<< HEAD
-        ) } else {
-          leaflet(data =  rent_seattle_data_reactive()) %>%
-            addProviderTiles("CartoDB.Positron") %>%
-            setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
-            addCircles(
-              lat = -122.3321, # specify the column for `lat` as a formula
-              lng = 47.6062, # specify the column for `lng` as a formula
-              stroke = FALSE, # remove border from each circle
-              color = ~palette_fn(input$var_type), # palette mapping
-              radius = 1,
-              fillOpacity = 0.5
-            ) %>%
-            addLegend(
-              position = "bottomright",
-              title = paste0(input$var_type, "of Rental Price in Seattle"),
-              pal = palette_fn, # the palette to label
-              values = ~input$var_type, # the values to label
-              opacity = 1
-            )
-        }
-        #dev.off() 
-=======
         ) 
->>>>>>> master
   })
   
   output$us_summary <- renderText({
