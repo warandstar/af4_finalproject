@@ -14,14 +14,8 @@ source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output, session) {
-  observe({
-    print(input$tabs)
-    print(input$var_type)
-    print(input$data_type)
-    print(input$city)
-    print(input$year)
-  })
-  
+
+  # Those observe command will take care of same sidebars in the different tabs
   observe({
     updated_var_type <- input$var_type
     updateRadioButtons(session, "var_type2", selected = updated_var_type)
@@ -89,6 +83,7 @@ our_server <- function(input, output, session) {
     updateRadioButtons(session, "data_type", selected = updated_data_type)
   })
   
+  # The reactive data of national average data of either price or percentage of either house or rent
   national_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -98,7 +93,7 @@ our_server <- function(input, output, session) {
     }
   })
   
-  
+  # The reactive data of seattle's average data of either price or percentage of either house or rent
   seattle_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -109,19 +104,22 @@ our_server <- function(input, output, session) {
     data
     
   })
-  
+
+  # The reactive data of seattle's average data of either price or percentage of house
   house_seattle_data_reactive <- reactive({
     data <- 0
     data <- house_seattle_data[, c("year", input$var_type)]
     data
   })
-  
+
+  # The reactive data of seattle's average data of either price or percentage of rent
   rent_seattle_data_reactive <- reactive({
     data <- 0
     data <- rent_seattle_data[, c("year", input$var_type)]
     data
   })
   
+  # The reactive data of other city's average data of either price or percentage of either house or rent
   other_city_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -136,6 +134,7 @@ our_server <- function(input, output, session) {
     
   })
   
+  # The reactive data of non-seattle washington's average data of either price or percentage of either house or rent
   washington_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -145,6 +144,8 @@ our_server <- function(input, output, session) {
     }
     data
   })
+  
+  # The reactive data of seattle's data of either price or percentage of either house or rent for each ZIP codes
   
   seattle_individual <- reactive({
     data <- 0
@@ -248,11 +249,13 @@ our_server <- function(input, output, session) {
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type), 
-        size = 2
+        size = 2,
+        color = "black"
       ) +
       geom_line(data = other_city_data_reactive(), na.rm = T,
                 mapping = aes_string(x = "year", y = input$var_type),
-                size = 2
+                size = 2,
+                color = "red"
       ) +
       labs(title = "Seattle Rates Compared to Other Cities",
            x = "Year",
