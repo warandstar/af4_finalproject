@@ -13,17 +13,17 @@ source("./project.R")
 
 # Define server logic for random distribution app ----
 our_server <- function(input, output) {
-  national_data_reactive <- reactive({
-    data <- 0
-    if (input$data_type == "House") {
-      data <- house_national_data[, c("year", input$var_type)]
-    } else {
-      data <- rent_national_data[, c("year", input$var_type)]
-    }
-    data <- data %>%
-      filter(year == input$year)
-    data
-  })
+  ##national_data_reactive <- reactive({
+    #data <- 0
+   # if (input$data_type == "House") {
+     ## data <- house_national_data[, c("year", input$var_type)]
+   # } else {
+     # data <- rent_national_data[, c("year", input$var_type)]
+    #}
+    #data <- data %>%
+     # filter(year == input$year)
+    #data
+  #})
 
   seattle_data_reactive <- reactive({
     data <- 0
@@ -71,23 +71,6 @@ our_server <- function(input, output) {
     data
   })
 
-
-  # Creating plots for housing/rental and rate/percentage
-  output$us_plot <- renderPlot({
-      rates <- ggplot(data = national_data_reactive(), na.rm = T) +
-        geom_line(
-          mapping = aes_string(x = "year", y = input$var_type), 
-          size = 2
-        ) +
-        geom_line(data = seattle_data_reactive(), na.rm = T,
-                  mapping = aes_string(x = "year", y = input$var_type),
-                  size = 2
-        ) +
-      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
-           x = "Year",
-           y = "Values")
-      rates
-  })
   
   seattle_individual <- reactive({
     data <- 0
