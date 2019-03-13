@@ -3,6 +3,7 @@ library("dplyr")
 library("ggplot2")
 library("maps")
 library("tidyr")
+library("leaflet")
 #library("mapproj")
 library("RColorBrewer")
 #install.packages('devtools')
@@ -25,6 +26,8 @@ our_server <- function(input, output) {
     } else {
       data <- rent_national_data[, c("year", input$var_type)]
     }
+    data <- data %>%
+      filter(year == input$year)
     data
   })
   
@@ -47,21 +50,19 @@ our_server <- function(input, output) {
   
   rent_seattle_data_reactive <- reactive({
     data <- rent_seattle_data[, c("year", input$var_type)]
-    View(data)
     data
   })
   
   other_city_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
-      print("House")
       data <- get_metropolitan_house_data(input$city)
       data <- data[, c("year", input$var_type)]
     } else {
-      print("rent")
       data <- get_metropolitan_rent_data(input$city)
       data <- data[, c("year", input$var_type)]
     }
+  
     data
     
   })
@@ -72,6 +73,16 @@ our_server <- function(input, output) {
       data <- house_washington_data[, c("year", input$var_type)]
     } else {
       data <- rent_washington_data[, c("year", input$var_type)]
+    }
+    data
+  })
+  
+  seattle_individual <- reactive({
+    data <- 0
+    if (input$data_type == "House") {
+      data <- house_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
+    } else {
+      data <- rent_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
     }
     data
   })
@@ -126,8 +137,7 @@ our_server <- function(input, output) {
       labs(
         title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
         x = "year",
-        y = input$var_type,
-        color = "Changes"
+        y = input$var_type
       ) 
     p
   }) #two_plot ends here
@@ -184,17 +194,10 @@ our_server <- function(input, output) {
   
   # Map
   output$map <- renderLeaflet ({
-    palette_fn <- 0
-    if (input$data_type == "House") {
-      palette_fn <- colorFactor(palette = "Set3", domain = house_seattle_data_reactive())
-      
-    } else {
-      palette_fn <- colorFactor(palette = "Set3", domain = rent_seattle_data_reactive()) 
-    }
+    palette_fn <- colorFactor(palette = "Set3", domain = seattle_individual())
     
     # Create a Leaflet map of new building construction by category
-    if (input$data_type == "House") {
-      leaflet(data =  house_seattle_data_reactive()) %>%
+      leaflet(data =  seattle_individual()) %>%
         addProviderTiles("CartoDB.Positron") %>%
         setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
         addCircles(
@@ -207,30 +210,11 @@ our_server <- function(input, output) {
         ) %>%
         addLegend(
           position = "bottomright",
-          title = paste0(input$var_type, "of House Price in Seattle"),
+          title = paste(input$var_type, "of", input$data_type, "Price in Seattle"),
           pal = palette_fn, # the palette to label
           values = ~input$var_type, # the values to label
           opacity = 1
-        ) } else {
-          leaflet(data =  rent_seattle_data_reactive()) %>%
-            addProviderTiles("CartoDB.Positron") %>%
-            setView(lng = -122.3321, lat = 47.6062, zoom = 10) %>%
-            addCircles(
-              lat = -122.3321, # specify the column for `lat` as a formula
-              lng = 47.6062, # specify the column for `lng` as a formula
-              stroke = FALSE, # remove border from each circle
-              color = ~palette_fn(input$var_type), # palette mapping
-              radius = 20,
-              fillOpacity = 0.5
-            ) %>%
-            addLegend(
-              position = "bottomright",
-              title = paste0(input$var_type, "of Rental Price in Seattle"),
-              pal = palette_fn, # the palette to label
-              values = ~input$var_type, # the values to label
-              opacity = 1
-            )
-        }
+        ) 
   })
   
   output$us_summary <- renderText({
