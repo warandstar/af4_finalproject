@@ -4,11 +4,7 @@ library("ggplot2")
 library("maps")
 library("tidyr")
 library("leaflet")
-#library("mapproj")
 library("RColorBrewer")
-#install.packages('devtools')
-
-#devtools::install_github("UrbanInstitute/urbnmapr")
 
 source("./our_ui.R")
 
@@ -90,18 +86,18 @@ our_server <- function(input, output) {
   
   # Creating plots for housing/rental and rate/percentage
   output$us_plot <- renderPlot({
-    rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
-      geom_line(
-        mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-        size = 2,
-        color = "black"
-      ) +
-      geom_line(
-        data = seattle_data_reactive(), na.rm = TRUE,
-        mapping = aes_string(x = "year", y = input$var_type, group = 1),
-        size = 2,
-        color = "red"
-      ) +
+      rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
+        geom_line(
+          mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+          size = 2,
+          color = "black"
+        ) +
+        geom_line(
+          data = seattle_data_reactive(), na.rm = TRUE,
+          mapping = aes_string(x = "year", y = input$var_type, group = 1),
+          size = 2,
+          color = "red"
+        ) +
       labs(title = "Seattle Housing Rates Compared to National Housing Rates",
            x = "Year",
            y = "Housing Rate")
@@ -124,16 +120,15 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-      geom_line(
-        mapping = aes_string(x = "year", y = input$var_type, group = 1),
+      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+                color = "red",
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
                 mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+                color = "blue", 
                 size = 2) + 
-      scale_x_continuous() + 
-      scale_y_continuous() +
       labs(
         title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
         x = "year",
@@ -143,25 +138,26 @@ our_server <- function(input, output) {
   }) #two_plot ends here
   
   # Tab2 - Table 
-  # returns one table representing either rate or percent change for both 
+  # returns two tables 
   output$seattle_table <- renderTable({
-      table_one <- house_seattle_data_reactive()
-      table_two <- rent_seattle_data_reactive()
-    table <- left_join(table_one, table_two, year)
-    table
+    if (input$data_type == "House") {
+      house_seattle_data_reactive()
+    } else if (input$var_type == "Rent") {
+      rent_seattle_data_reactive()
+    } 
   }) # two_table ends here
   
   
   # Tab 3 - Creating plots for seattle/wa and rate/percentage
   output$washington_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
-      geom_point(
+      geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1), 
         size = 2,
         color = "black"
       ) +
-      geom_point(data = washington_data_reactive(), na.rm = T,
-                mapping = aes_string(x = "year", y = input$var_type, group = 1),
+      geom_line(data = washington_data_reactive(), na.rm = T,
+                mapping = aes_string(x = "year", y = input$var_type),
                 size = 2,
                 color = "red"
       ) +
@@ -190,7 +186,7 @@ our_server <- function(input, output) {
   
   # Construct a function that returns a color based on the data
   # Colors are taken from the ColorBrewer Set3 palette
-  
+
   
   # Map
   output$map <- renderLeaflet ({
