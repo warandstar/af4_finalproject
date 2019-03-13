@@ -153,13 +153,13 @@ our_server <- function(input, output, session) {
         geom_line(
           mapping = aes_string(x = "year", y = input$var_type, group = 1), 
           size = 2,
-          color = "black"
+          color = "red"
         ) +
         geom_line(
           data = seattle_data_reactive(), na.rm = TRUE,
           mapping = aes_string(x = "year", y = input$var_type, group = 1),
           size = 2,
-          color = "red"
+          color = "navy"
         ) +
       labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to National ", input$data_type, " ", input$var_type),
            x = "Year",
@@ -225,13 +225,13 @@ our_server <- function(input, output, session) {
   output$seattle_plot <- renderPlot({
     rates <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
       geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-                color = "red",
+                color = "navy",
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
                 mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-                color = "blue", 
+                color = "yellow", 
                 size = 2) + 
       labs(
         title = paste0("Seattle Regional ", input$var_type, " Change Over Time for House and Rent "),
@@ -289,7 +289,7 @@ our_server <- function(input, output, session) {
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1), 
         size = 2,
-        color = "black"
+        color = "navy"
       ) +
       geom_line(data = washington_data_reactive(), na.rm = T,
                 mapping = aes_string(x = "year", y = input$var_type),
@@ -356,7 +356,7 @@ our_server <- function(input, output, session) {
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type), 
         size = 2,
-        color = "black"
+        color = "navy"
       ) +
       geom_line(data = other_city_data_reactive(), na.rm = T,
                 mapping = aes_string(x = "year", y = input$var_type),
