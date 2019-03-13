@@ -169,7 +169,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("map")
+                                    plotOutput("map") # to do: change that to leaflet!
                                   )
                                 )
                               )

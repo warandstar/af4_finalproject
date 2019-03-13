@@ -22,9 +22,6 @@ our_server <- function(input, output) {
     } else {
       data <- rent_national_data[, c("year", input$var_type)]
     }
-    data <- data %>%
-      filter(year == input$year)
-    data
   })
   
   
@@ -82,6 +79,9 @@ our_server <- function(input, output) {
     } else {
       data <- rent_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
     }
+    
+    data <- data %>%
+      filter(year = input$year)
     data
   })
   
