@@ -151,19 +151,19 @@ our_server <- function(input, output, session) {
   output$us_plot <- renderPlot({
       rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
         geom_line(
-          mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-          size = 2,
-          color = "red"
+          mapping = aes_string(x = "year", y = input$var_type, color = shQuote("nation"), group = 1), 
+          size = 2
         ) +
         geom_line(
           data = seattle_data_reactive(), na.rm = TRUE,
-          mapping = aes_string(x = "year", y = input$var_type, group = 1),
-          size = 2,
-          color = "navy"
+          mapping = aes_string(x = "year", y = input$var_type, color = shQuote("seattle"), group = 1),
+          size = 2
         ) +
       labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to National ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = paste0(input$data_type, " ", input$var_type))
+           y = paste0(input$data_type, " ", input$var_type)) +
+      scale_color_manual(name = "prices of Seattle and National", 
+                         values = c("nation" = "red", "seattle" = "navy"))
     rates
   })
   
@@ -224,20 +224,20 @@ our_server <- function(input, output, session) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     rates <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-                color = "navy",
+      geom_line(mapping = aes_string(x = "year", y = input$var_type, color = shQuote("house"), group = 1),
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
-                mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-                color = "yellow", 
+                mapping = aes_string(x = "year", y = input$var_type, color = shQuote("rent"), group = 1), 
                 size = 2) + 
       labs(
         title = paste0("Seattle Regional ", input$var_type, " Change Over Time for House and Rent "),
         x = "Year",
         y = paste0(input$data_type, " ", input$var_type)
-      ) 
+      ) +
+      scale_color_manual(name = "house and rent price of Seattle", 
+                         values = c("house" = "navy", "rent" = "yellow"))
     rates
   })
   
@@ -287,18 +287,19 @@ our_server <- function(input, output, session) {
   output$washington_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
-        mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-        size = 2,
-        color = "navy"
+        mapping = aes_string(x = "year", y = input$var_type, color = shQuote("seattle"), group = 1), 
+        size = 2
       ) +
       geom_line(data = washington_data_reactive(), na.rm = T,
-                mapping = aes_string(x = "year", y = input$var_type),
-                size = 2,
-                color = "red"
+                mapping = aes_string(x = "year", y = input$var_type, color = shQuote("washington"), group = 1),
+                size = 2
       ) +
       labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to WA State cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = paste0(input$data_type, " ", input$var_type))
+           y = paste0(input$data_type, " ", input$var_type)) +
+      scale_color_manual(name = "Prices of Seattle and Washington", 
+                         values = c("seattle" = "navy", "washington" = "yellow"))
+      
     rates
   })
   
@@ -354,18 +355,18 @@ our_server <- function(input, output, session) {
   output$other_city_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
-        mapping = aes_string(x = "year", y = input$var_type), 
-        size = 2,
-        color = "navy"
+        mapping = aes_string(x = "year", y = input$var_type, color = shQuote("seattle")), 
+        size = 2
       ) +
       geom_line(data = other_city_data_reactive(), na.rm = T,
-                mapping = aes_string(x = "year", y = input$var_type),
-                size = 2,
-                color = "red"
+                mapping = aes_string(x = "year", y = input$var_type, color = shQuote("other_city")),
+                size = 2
       ) +
       labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to some other U.S. cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = paste0(input$data_type, " ", input$var_type))
+           y = paste0(input$data_type, " ", input$var_type)) + 
+      scale_color_manual(name = paste("Prices of Seattle and", input$city), 
+                         values = c("seattle" = "navy", "other_city" = "red"))
     rates
   })
   
