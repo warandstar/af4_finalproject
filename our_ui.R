@@ -170,7 +170,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("map")
+                                    leafletOutput("map", width = "100%", height = 400)
                                   )
                                 )
                               )
