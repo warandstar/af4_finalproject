@@ -2,6 +2,7 @@ library("shiny")
 library("dplyr")
 
 # user interface that the user can filter data that they want to see
+
 our_ui <- navbarPage("Seattle Gentrification",
                      
                      # Tab 0: gives an overview in text of 
