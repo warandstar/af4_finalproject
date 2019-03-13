@@ -2,31 +2,41 @@ library("knitr")
 library("httr")
 library("jsonlite")
 library("dplyr")
-library("tidyr")
+library("tidyr") 
 
+# read house listings data in the U.S from repo for more data wrangling below 
+# read rent data in the U.S
 house_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zhvi_AllHomes.csv", stringsAsFactors = FALSE))
 rent_price_data <- as.data.frame(read.csv(file = "./data/Zip_Zri_AllHomesPlusMultifamily.csv", stringsAsFactors = FALSE))
 
-# we only need data from 2010.11
-
+# we only need data from 2010.11 - 2019.1
 house_price_data <- house_price_data[ , c(1:7, 183:281)]
 
+# Data wrangling for house listing data in the U.S
+# select the first 7 columns
+# adds columns containing information for month and year separately
 house_price_data <- house_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
   mutate(year = as.integer(year), month = as.integer(month))
 
+# Data wrangling for rent data in the U.S
+# select the first 7 columns
+# Again, adds columns containing information for month and year separately
 rent_price_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
   mutate(year = as.integer(year), month = as.integer(month))
 
-
+# For simplicity and accessbility, 
+# we only look at National Data on house and rent price from 2010.11 to 2019.01
+# stores a years variable to have a cleaner code later on
 years <- 2010:2019
-# National Data on house and rent price from 2010.11 to 2019.01
 
+# Create a data frame from house_price_data that contains a summary table
+# of National Mean of house price 
 house_national_data <- house_price_data %>%
   group_by(year, month) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
@@ -98,12 +108,15 @@ house_seattle_individual <- house_price_data %>%
   group_by(RegionName, year) %>%
   summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
 
+house_seattle_individual[, "Percentage"] = c(0, 100 * (log(house_seattle_individual$Rate[2:10]) - log(house_seattle_individual$Rate[1:9])))
+
 rent_seattle_individual <- rent_price_data %>%
   filter(Metro == "Seattle-Tacoma-Bellevue") %>%
   group_by(RegionName, year, month) %>%
   summarize(city = City, Rate = mean(year_value, na.rm = TRUE)) %>%
   group_by(RegionName, year) %>%
   summarize(city = city[1], Rate = mean(Rate, na.rm = TRUE))
+rent_seattle_individual[, "Percentage"] = c(0, 100 * (log(rent_seattle_individual$Rate[2:10]) - log(rent_seattle_individual$Rate[1:9])))
 
 # seattle vs washington comparison data
 # this data is non-seattle-metropolitan data

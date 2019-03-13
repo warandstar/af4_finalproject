@@ -1,41 +1,23 @@
 library("shiny")
 library("dplyr")
-library("leaflet")
 
-# tab 1 will have visualization of house and rent data of 
-# seattle and national level (compare) and user can choose between 
-# house price and rent price as well as between price in dollars and percentage change
-
-# tab 2 will have the seattle region's change over time for rent and house (?)
-
-# tab 3 will have data and map of the seattle price level on each year 
-# based on user's selection
-# tab 4 will compare seattle with other region such as SF
-
-source("./project.R")
-
+# user interface that the user can filter data that they want to see
 our_ui <- navbarPage("Seattle Gentrification",
-                     tabPanel(title = "Intro",
-                              titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
-                              
-                              p("We are going to explore the simple case of gentrification in the example of Seattle"),
-                              
-                              p("Questions we will answers are: "),
-                              
-                              p("We will address those questions by showing visualization of each case by: "),
-                              
-                              p("First we will compare the Seattle's house and rental price with national average level."),
-                              
-                              p("Then, We will explore the trend of Seattle house and rental price."),
-                              
-                              p("Then, we will see if it is general case of Washington state or just Seattle."),
-                              
-                              p("Lastly we will compare with the Seattle area and other cities area."),
-                              
-                              p("We will present the map as well.")
+                     
+                     # Tab 0: gives an overview in text of 
+                     # 1) the questions this project is trying to find answers for
+                     # 2) sets of data that this project deals with
+                     # 3) how this project is going to use to the data sets to address 
+                     #   the questions
+                     tabPanel(title = "Introduction", 
+                              includeHTML("introduction.html")
                      ),
                      
-                     # Define UI for random distribution app ----
+                     # Tab 1: Comparing Seattle Data with corresponding National Data
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs National",
                               fluidPage(
                                 sidebarLayout(
@@ -56,19 +38,22 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("us_plot")
+                                    plotOutput("us_plot"),
+                                    textOutput("us_summary")
                                   )
                                 )
                               )
                      ),
                      
-                     
+                     # Tab 2: showing two line representations of trends in 
+                     # Seattle house listing AND rent in terms of 
+                     # either Rate or Percentage increase, depending on user's input
                      tabPanel(title = "trend",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type2",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
@@ -76,26 +61,32 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    #tableOutput("seattle_table"),
-                                    plotOutput("seattle_plot")
+                                    plotOutput("seattle_plot"),
+                                    textOutput("seattle_summary")
                                   )
                                 )
                               )
                      ),
                      
+                     # Tab 3: Comparing Seattle Data with corresponding data set of 
+                     # the rest of Washington state
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs other Washington",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type3",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
                                     ),
                                     
                                     radioButtons(
-                                      inputId = "data_type",
+                                      inputId = "data_type3",
                                       label =  "Choose A Type of Data",
                                       choices = c("House", "Rent"),
                                       selected = "House"
@@ -103,26 +94,33 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("washington_plot")
+                                    plotOutput("washington_plot"),
+                                    textOutput("washington_summary")
                                   )
                                 )
                               )
                      ),
                      
-                     
+                     # Tab 4: Comparing Seattle Data with corresponding data set of 
+                     # the other representative cities in the U.S - the user can choose among 
+                     # New York, San Francisco, Chicago, Huston, Washington, Charlotte
+                     # the user can select two sets of inputs: Rate/Percentage, House/Rent
+                     # the App will then plot the data accordingly of the Seattle 
+                     # Housing Listing/ Rent in terms of Rate/Percentage,
+                     # depending on the user's input
                      tabPanel(title = "vs other cities",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
                                     radioButtons(
-                                      inputId = "var_type",
+                                      inputId = "var_type4",
                                       label = "Choose Rate or Percentage Change",
                                       choices = c("Rate", "Percentage"),
                                       selected = "Rate"
                                     ),
                                     
                                     radioButtons(
-                                      inputId = "data_type",
+                                      inputId = "data_type4",
                                       label =  "Choose A Type of Data",
                                       choices = c("House", "Rent"),
                                       selected = "House"
@@ -138,50 +136,31 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("other_city_plot")
+                                    plotOutput("other_city_plot"),
+                                    textOutput("other_city_summary")
                                   )
                                 )
                               )
                               
                      ),
                      
-                     tabPanel(title = "Map",
-                              fluidPage(
-                                sidebarLayout(
-                                  sidebarPanel(
-                                    radioButtons(
-                                      inputId = "var_type",
-                                      label = "Choose Rate or Percentage Change",
-                                      choices = c("Rate", "Percentage"),
-                                      selected = "Rate"
-                                    ),
-                                    
-                                    radioButtons(
-                                      inputId = "data_type",
-                                      label =  "Choose A Type of Data",
-                                      choices = c("House", "Rent"),
-                                      selected = "House"
-                                    ),
-                                    
-                                    selectInput(
-                                      inputId = "year",
-                                      label = "Choose Year and Month",
-                                      choices = years,
-                                      selected = years[1]
-                                    )
-                                  ),
-                                  
-                                  mainPanel(
-                                    leafletOutput("map", width = "100%", height = 400)
-                                  )
-                                )
-                              )
+                     # Tab 5: Conclusion
+                     # includes a conclusion of answers to the questions
+                     # evident by data shown in previous tabs
+                     tabPanel(title = "Conclusion", 
+                              includeHTML("conclusion.html")
                      ),
                      
+                     # Tab 6: Resources
+                     # cite the resources where the data was read from 
+                     # constrcuted in a R markdown file 
                      tabPanel(title = "Resources", 
                               includeHTML("resource.html")
                      ),
                      
+                     # Tab 7: Authors
+                     # brief introduction of our team memebers
+                     # constrcuted in a R markdown file 
                      tabPanel(title = "Authors", 
                               includeHTML("author.html")
                      )
