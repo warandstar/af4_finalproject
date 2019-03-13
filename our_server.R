@@ -175,9 +175,9 @@ our_server <- function(input, output, session) {
           size = 2,
           color = "red"
         ) +
-      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to National ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
   })
   
@@ -207,9 +207,9 @@ our_server <- function(input, output, session) {
                 color = "blue", 
                 size = 2) + 
       labs(
-        title = paste0("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
-        x = "year",
-        y = input$var_type
+        title = paste0("Seattle Regional ", input$var_type, " Change Over Time for House and Rent "),
+        x = "Year",
+        y = paste0(input$data_type, " ", input$var_type)
       ) 
     p
   }) #two_plot ends here
@@ -238,9 +238,9 @@ our_server <- function(input, output, session) {
                 size = 2,
                 color = "red"
       ) +
-      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to WA State cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
   })
   
@@ -257,9 +257,9 @@ our_server <- function(input, output, session) {
                 size = 2,
                 color = "red"
       ) +
-      labs(title = "Seattle Rates Compared to Other Cities",
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to some other U.S. cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
   })
   
