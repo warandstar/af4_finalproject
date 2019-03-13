@@ -44,11 +44,13 @@ our_server <- function(input, output) {
   })
   
   house_seattle_data_reactive <- reactive({
+    data <- 0
     data <- house_seattle_data[, c("year", input$var_type)]
     data
   })
   
   rent_seattle_data_reactive <- reactive({
+    data <- 0
     data <- rent_seattle_data[, c("year", input$var_type)]
     data
   })
