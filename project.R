@@ -36,21 +36,25 @@ rent_price_data <- rent_price_data %>%
 years <- 2010:2019
 
 # Create a data frame from house_price_data that contains a summary table
-# of National Mean of house price 
+# of national mean of house prices in the U.S
 house_national_data <- house_price_data %>%
   group_by(year, month) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+# 
 house_national_data[, "Percentage"] = c(0, 100 * (log(house_national_data$Rate[2:10]) - log(house_national_data$Rate[1:9])))
 
+# Create a data frame called rent_national_data from rent_price_data that 
+# contains a summary table of national mean of house prices in the U.S
 rent_national_data <- rent_price_data %>%
   group_by(year, month) %>%
   summarize(Rate = mean(year_value, na.rm = TRUE)) %>%
   group_by(year) %>%
   summarize(Rate = mean(Rate, na.rm = TRUE))
 
+#
 rent_national_data[, "Percentage"] = c(0, 100 * (log(rent_national_data$Rate[2:10]) - log(rent_national_data$Rate[1:9])))
 
 
