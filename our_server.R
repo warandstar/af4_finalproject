@@ -50,21 +50,19 @@ our_server <- function(input, output) {
   
   rent_seattle_data_reactive <- reactive({
     data <- rent_seattle_data[, c("year", input$var_type)]
-    View(data)
     data
   })
   
   other_city_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
-      print("House")
       data <- get_metropolitan_house_data(input$city)
       data <- data[, c("year", input$var_type)]
     } else {
-      print("rent")
       data <- get_metropolitan_rent_data(input$city)
       data <- data[, c("year", input$var_type)]
     }
+  
     data
     
   })

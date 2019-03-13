@@ -21,7 +21,7 @@ rent_price_data <- rent_price_data %>%
   gather(key = year, value = year_value, -c(colnames(house_price_data)[1:7])) %>%
   mutate(year = substring(year, 2, 8)) %>%
   separate(year, c("year", "month"), sep = "\\.") %>%
-  mutate(year = year, month = as.integer(month))
+  mutate(year = as.integer(year), month = as.integer(month))
 
 
 years <- 2010:2019

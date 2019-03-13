@@ -1,5 +1,6 @@
 library("shiny")
 library("dplyr")
+library("leaflet")
 
 # tab 1 will have visualization of house and rent data of 
 # seattle and national level (compare) and user can choose between 
