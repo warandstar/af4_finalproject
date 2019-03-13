@@ -417,8 +417,5 @@ our_server <- function(input, output, session) {
            other_city_2012, " to $", other_city_2018, ", which is ", change_other_city, "%")
   })
   
-  # Construct a function that returns a color based on the data
-  # Colors are taken from the ColorBrewer Set3 palette
-  
 } # our_server.R ends here
 
