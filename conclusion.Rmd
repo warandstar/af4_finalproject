@@ -1,0 +1,15 @@
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Conclusion of Data Report
+
+
+Through our data and visualization, we have successfully presented the housing and rental trends of Seattle. 
+We also have compared this trends in varied scales: with U.S. National levels, with some other U.S. cities, and with other Washington State cities. 
+
+We have presented line plots and allowed the users to experience interactivity when analyzing Housing and Rental Price rates and Percentages. Those plots yields us the conclusion that Seattle is experiencing rapid increase in price of houses and rents compared to US national levels, and other cities (excluding SF), and other Washington state cities. Thus, we will answer the question 1~4 from introduction that Seattle is experiencing the gentrification if houses and rents are strong indicator for gentrification, compared to other places.  
+
+We have presented visualization of an interactive map of Seattle area. 

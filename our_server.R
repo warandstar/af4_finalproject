@@ -4,11 +4,7 @@ library("ggplot2")
 library("maps")
 library("tidyr")
 library("leaflet")
-#library("mapproj")
 library("RColorBrewer")
-#install.packages('devtools')
-
-#devtools::install_github("UrbanInstitute/urbnmapr")
 
 source("./our_ui.R")
 
@@ -17,8 +13,78 @@ options(scipen = 999)
 source("./project.R")
 
 # Define server logic for random distribution app ----
-our_server <- function(input, output) {
+our_server <- function(input, output, session) {
+
+  ## Observe
+  # Those observe command will take care of same sidebars in the different tabs
+  observe({
+    updated_var_type <- input$var_type
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
   
+  observe({
+    updated_var_type <- input$var_type2
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type3
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_var_type <- input$var_type4
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+    updateRadioButtons(session, "var_type5", selected = updated_var_type)
+  })
+  observe({
+    updated_var_type <- input$var_type5
+    updateRadioButtons(session, "var_type2", selected = updated_var_type)
+    updateRadioButtons(session, "var_type3", selected = updated_var_type)
+    updateRadioButtons(session, "var_type4", selected = updated_var_type)
+    updateRadioButtons(session, "var_type", selected = updated_var_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type3
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type4
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+    updateRadioButtons(session, "data_type5", selected = updated_data_type)
+  })
+  
+  observe({
+    updated_data_type <- input$data_type5
+    updateRadioButtons(session, "data_type3", selected = updated_data_type)
+    updateRadioButtons(session, "data_type4", selected = updated_data_type)
+    updateRadioButtons(session, "data_type", selected = updated_data_type)
+  })
+  
+  # The reactive data of national average data of either price or percentage of either house or rent
   national_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -26,12 +92,9 @@ our_server <- function(input, output) {
     } else {
       data <- rent_national_data[, c("year", input$var_type)]
     }
-    data <- data %>%
-      filter(year == input$year)
-    data
   })
   
-  
+  # The reactive data of seattle's average data of either price or percentage of either house or rent
   seattle_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -42,17 +105,22 @@ our_server <- function(input, output) {
     data
     
   })
-  
+
+  # The reactive data of seattle's average data of either price or percentage of house
   house_seattle_data_reactive <- reactive({
+    data <- 0
     data <- house_seattle_data[, c("year", input$var_type)]
     data
   })
-  
+
+  # The reactive data of seattle's average data of either price or percentage of rent
   rent_seattle_data_reactive <- reactive({
+    data <- 0
     data <- rent_seattle_data[, c("year", input$var_type)]
     data
   })
   
+  # The reactive data of other city's average data of either price or percentage of either house or rent
   other_city_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -67,6 +135,7 @@ our_server <- function(input, output) {
     
   })
   
+  # The reactive data of non-seattle washington's average data of either price or percentage of either house or rent
   washington_data_reactive <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -77,6 +146,7 @@ our_server <- function(input, output) {
     data
   })
   
+  # The reactive data of seattle's data of either price or percentage of either house or rent for each ZIP codes
   seattle_individual <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -84,38 +154,43 @@ our_server <- function(input, output) {
     } else {
       data <- rent_seattle_individual[, c("year", "RegionName", "city", input$var_type)]
     }
+    
+    data <- data %>%
+      filter(year == input$year)
     data
   })
   
-  
-  # Creating plots for housing/rental and rate/percentage
+  # Tab 1
+  # Creating plots for housing/rental and rate/percentage of Seattle and National level
+  # housing/rental and rate/percentage are chosen by users by interactive sidebars.
   output$us_plot <- renderPlot({
-    rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
-      geom_line(
-        mapping = aes_string(x = "year", y = input$var_type, group = 1), 
-        size = 2,
-        color = "black"
-      ) +
-      geom_line(
-        data = seattle_data_reactive(), na.rm = TRUE,
-        mapping = aes_string(x = "year", y = input$var_type, group = 1),
-        size = 2,
-        color = "red"
-      ) +
-      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+      rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
+        geom_line(
+          mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+          size = 2,
+          color = "black"
+        ) +
+        geom_line(
+          data = seattle_data_reactive(), na.rm = TRUE,
+          mapping = aes_string(x = "year", y = input$var_type, group = 1),
+          size = 2,
+          color = "red"
+        ) +
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to National ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
   })
   
-  # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
-  output$seattle_summary <- renderPrint({
-    if (input$data_type == "House") {
-      summary(seattle_data_reactive())
-    } else {
-      summary(seattle_data_reactive())
-    }
+  # summary of the plot on Seattle and National Data
+  output$us_summary <- renderText({
+    paste0("This visualization demonstrates ", input$var_type, " of prices over the years Seattle and National Level. ", 
+           "Thus, the answer to this question, we can clearly see that the rapid increase from 2012 to 2017 in ",
+           "Seattle compared to national level.")
+      
   })
+  
+  
   
   # Tab2 - plot
   # returns line plots between which the red plot represents data of house listings
@@ -124,75 +199,92 @@ our_server <- function(input, output) {
   # Rate or percent_change depending on user's input. 
   output$seattle_plot <- renderPlot({
     p <- ggplot(data = house_seattle_data_reactive(), na.rm = TRUE) +
-      geom_line(
-        mapping = aes_string(x = "year", y = input$var_type, group = 1),
+      geom_line(mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+                color = "red",
                 size = 2) + 
       # second line in the same plot 
       # represents how rate change over time in Seattle  
       geom_line(data = rent_seattle_data_reactive(), na.rm = TRUE,
                 mapping = aes_string(x = "year", y = input$var_type, group = 1), 
+                color = "blue", 
                 size = 2) + 
-      scale_x_continuous() + 
-      scale_y_continuous() +
       labs(
-        title = paste("Seattle Regional", input$var_type, "Change Over Time for House and Rent"),
-        x = "year",
-        y = input$var_type
+        title = paste0("Seattle Regional ", input$var_type, " Change Over Time for House and Rent "),
+        x = "Year",
+        y = paste0(input$data_type, " ", input$var_type)
       ) 
     p
-  }) #two_plot ends here
+  })
   
-  # Tab2 - Table 
-  # returns one table representing either rate or percent change for both 
-  output$seattle_table <- renderTable({
-      table_one <- house_seattle_data_reactive()
-      table_two <- rent_seattle_data_reactive()
-    table <- left_join(table_one, table_two, year)
-    table
-  }) # two_table ends here
+  # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
+  output$seattle_summary <- renderText({
+    paste0("This visualization portrays the ", input$var_type, " of the prices of both houses and rents.", 
+           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2017.")
+  })
   
-  
-  # Tab 3 - Creating plots for seattle/wa and rate/percentage
+  # Tab 3 - Creating plots for rate/percentage of housing/rental for Seattle and Washington outside of Seattle
+  # Housing/rental and Rate/Percentage can be switched by users by using interactive sidebars
   output$washington_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
-      geom_point(
+      geom_line(
         mapping = aes_string(x = "year", y = input$var_type, group = 1), 
         size = 2,
         color = "black"
       ) +
-      geom_point(data = washington_data_reactive(), na.rm = T,
-                mapping = aes_string(x = "year", y = input$var_type, group = 1),
+      geom_line(data = washington_data_reactive(), na.rm = T,
+                mapping = aes_string(x = "year", y = input$var_type),
                 size = 2,
                 color = "red"
       ) +
-      labs(title = "Seattle Housing Rates Compared to National Housing Rates",
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to WA State cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
   })
   
+  # create the summary of plot of washington and seattle data
+  output$washington_summary <- renderText({
+    paste0("This visualization portrays the ", input$var_type, "of prices of", input$data_type, 
+           "in Seattle area and Washington state outside of Seattle area. ", 
+           "Thus, The data shows that the trends of sharp increase from 2012 and 2017 is true but ", 
+           "the Seattle area has more rapid increase compared to other Washington State cities")
+  })
+  
   # Tab 4
+  # create the plots of rates/percentage of house/rents of Seattle and other cities
+  # rates/percentage and house/rents can be switched based on users' choice
   output$other_city_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
         mapping = aes_string(x = "year", y = input$var_type), 
-        size = 2
+        size = 2,
+        color = "black"
       ) +
       geom_line(data = other_city_data_reactive(), na.rm = T,
                 mapping = aes_string(x = "year", y = input$var_type),
-                size = 2
+                size = 2,
+                color = "red"
       ) +
-      labs(title = "Seattle Rates Compared to Other Cities",
+      labs(title = paste0("Seattle ", input$data_type, " ", input$var_type, " Compared to some other U.S. cities' ", input$data_type, " ", input$var_type),
            x = "Year",
-           y = "Housing Rate")
+           y = paste0(input$data_type, " ", input$var_type))
     rates
+  })
+  
+  # create the summary of plot of seattle and other city data
+  output$other_city_summary <- renderText({
+    paste0("This visualization shows the ", input$var_type, " of the prices of ", input$data_type, " in ",
+           "Seattle Area and ", input$city, " Area. ", 
+           "Overall, the result shows that Seattle is one of cities with sharp increase in prices!")
   })
   
   # Construct a function that returns a color based on the data
   # Colors are taken from the ColorBrewer Set3 palette
-  
+
   
   # Map
+  # Create interactive map which you can see the housing/rental rate/percentage data of the regions of seattle area
+  # housing/rental and rate/percentage are based on user's choice
   output$map <- renderLeaflet ({
     palette_fn <- colorFactor(palette = "Set3", domain = seattle_individual())
     
@@ -217,19 +309,7 @@ our_server <- function(input, output) {
         ) 
   })
   
-  output$us_summary <- renderText({
-    if(input$data_type == "House") {
-      paste0("This visualization demonstrates the rates of ", input$var_type, " (in dollars) for almost each state in U.S. by deploying the 'House Price (in dollars)' in 
-              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time House Price Rates differs from State-to-State in U.S. in most recent years? 
-              Analysis: The one time House Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $100000 to $600000 as clearly conveyed by our plot.")
-      
-    } else {
-      paste0("This visualization demonstrates the rates of ", input$var_type, " (in dollars) for almost each state in U.S. by deploying the 'Rental Price (in dollars)' in 
-              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time Rental Price Rates differs from State-to-State in U.S. in most recent years? 
-              Analysis: The annual Rental Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $12000 to $48000 as clearly conveyed by our plot.")
-    }
-    
-  })
+  
   
   
   
