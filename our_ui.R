@@ -1,36 +1,31 @@
 library("shiny")
 library("dplyr")
 
+# tab 0 is introduction, 
 # tab 1 will have visualization of house and rent data of 
 # seattle and national level (compare) and user can choose between 
 # house price and rent price as well as between price in dollars and percentage change
 
-# tab 2 will have the seattle region's change over time for rent and house (?)
+# tab 2 will have the seattle area's change over time for rent and house 
 
 # tab 3 will have data and map of the seattle price level on each year 
 # based on user's selection
+
 # tab 4 will compare seattle with other region such as SF
 
+# tab 5 will be the interactive map
+
+# tab 6 will be the conclusion
+
+# tab 7 will be the resources
+
+# tab 8 will be describing authors
+
 our_ui <- navbarPage("Seattle Gentrification",
-                     tabPanel(title = "Intro",
-                              titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
-                              
-                              p("We are going to explore the simple case of gentrification in the example of Seattle"),
-                              
-                              p("Questions we will answers are: "),
-                              
-                              p("We will address those questions by showing visualization of each case by: "),
-                              
-                              p("First we will compare the Seattle's house and rental price with national average level."),
-                              
-                              p("Then, We will explore the trend of Seattle house and rental price."),
-                              
-                              p("Then, we will see if it is general case of Washington state or just Seattle."),
-                              
-                              p("Lastly we will compare with the Seattle area and other cities area."),
-                              
-                              p("We will present the map as well.")
+                     tabPanel(title = "Introduction", 
+                              includeHTML("introduction.html")
                      ),
+                     
                      
                      # Define UI for random distribution app ----
                      tabPanel(title = "vs National",
@@ -53,7 +48,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("us_plot")
+                                    plotOutput("us_plot"),
+                                    textOutput("us_summary")
                                   )
                                 )
                               )
@@ -73,8 +69,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    dataTableOutput("seattle_table"),
-                                    plotOutput("seattle_plot")
+                                    plotOutput("seattle_plot"),
+                                    textOutput("seattle_summary")
                                   )
                                 )
                               )
@@ -100,7 +96,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("washington_plot")
+                                    plotOutput("washington_plot"),
+                                    textOutput("washington_summary")
                                   )
                                 )
                               )
@@ -135,7 +132,8 @@ our_ui <- navbarPage("Seattle Gentrification",
                                   ),
                                   
                                   mainPanel(
-                                    plotOutput("other_city_plot")
+                                    plotOutput("other_city_plot"),
+                                    textOutput("other_city_summary")
                                   )
                                 )
                               )

@@ -15,6 +15,7 @@ source("./project.R")
 # Define server logic for random distribution app ----
 our_server <- function(input, output, session) {
 
+  ## Observe
   # Those observe command will take care of same sidebars in the different tabs
   observe({
     updated_var_type <- input$var_type
@@ -146,7 +147,6 @@ our_server <- function(input, output, session) {
   })
   
   # The reactive data of seattle's data of either price or percentage of either house or rent for each ZIP codes
-  
   seattle_individual <- reactive({
     data <- 0
     if (input$data_type == "House") {
@@ -160,8 +160,9 @@ our_server <- function(input, output, session) {
     data
   })
   
-  
-  # Creating plots for housing/rental and rate/percentage
+  # Tab 1
+  # Creating plots for housing/rental and rate/percentage of Seattle and National level
+  # housing/rental and rate/percentage are chosen by users by interactive sidebars.
   output$us_plot <- renderPlot({
       rates <- ggplot(data = national_data_reactive(), na.rm = TRUE) +
         geom_line(
@@ -181,14 +182,15 @@ our_server <- function(input, output, session) {
     rates
   })
   
-  # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
-  output$seattle_summary <- renderPrint({
-    if (input$data_type == "House") {
-      summary(seattle_data_reactive())
-    } else {
-      summary(seattle_data_reactive())
-    }
+  # summary of the plot on Seattle and National Data
+  output$us_summary <- renderText({
+    paste0("This visualization demonstrates ", input$var_type, " of prices over the years Seattle and National Level. ", 
+           "Thus, the answer to this question, we can clearly see that the rapid increase from 2012 to 2017 in ",
+           "Seattle compared to national level.")
+      
   })
+  
+  
   
   # Tab2 - plot
   # returns line plots between which the red plot represents data of house listings
@@ -212,20 +214,16 @@ our_server <- function(input, output, session) {
         y = paste0(input$data_type, " ", input$var_type)
       ) 
     p
-  }) #two_plot ends here
+  })
   
-  # Tab2 - Table 
-  # returns two tables 
-  output$seattle_table <- renderTable({
-    if (input$data_type == "House") {
-      house_seattle_data_reactive()
-    } else if (input$var_type == "Rent") {
-      rent_seattle_data_reactive()
-    } 
-  }) # two_table ends here
+  # Tab2 - summaries of data on House Listing & Monthly Rent in Seattle
+  output$seattle_summary <- renderText({
+    paste0("This visualization portrays the ", input$var_type, " of the prices of both houses and rents.", 
+           "The result shows that the Seattle is experiencing sharp increase of house and rents in 2012 to 2017.")
+  })
   
-  
-  # Tab 3 - Creating plots for seattle/wa and rate/percentage
+  # Tab 3 - Creating plots for rate/percentage of housing/rental for Seattle and Washington outside of Seattle
+  # Housing/rental and Rate/Percentage can be switched by users by using interactive sidebars
   output$washington_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
@@ -244,7 +242,17 @@ our_server <- function(input, output, session) {
     rates
   })
   
+  # create the summary of plot of washington and seattle data
+  output$washington_summary <- renderText({
+    paste0("This visualization portrays the ", input$var_type, "of prices of", input$data_type, 
+           "in Seattle area and Washington state outside of Seattle area. ", 
+           "Thus, The data shows that the trends of sharp increase from 2012 and 2017 is true but ", 
+           "the Seattle area has more rapid increase compared to other Washington State cities")
+  })
+  
   # Tab 4
+  # create the plots of rates/percentage of house/rents of Seattle and other cities
+  # rates/percentage and house/rents can be switched based on users' choice
   output$other_city_plot <- renderPlot({
     rates <- ggplot(data = seattle_data_reactive(), na.rm = T) +
       geom_line(
@@ -263,11 +271,20 @@ our_server <- function(input, output, session) {
     rates
   })
   
+  # create the summary of plot of seattle and other city data
+  output$other_city_summary <- renderText({
+    paste0("This visualization shows the ", input$var_type, " of the prices of ", input$data_type, " in ",
+           "Seattle Area and ", input$city, " Area. ", 
+           "Overall, the result shows that Seattle is one of cities with sharp increase in prices!")
+  })
+  
   # Construct a function that returns a color based on the data
   # Colors are taken from the ColorBrewer Set3 palette
 
   
   # Map
+  # Create interactive map which you can see the housing/rental rate/percentage data of the regions of seattle area
+  # housing/rental and rate/percentage are based on user's choice
   output$map <- renderLeaflet ({
     palette_fn <- colorFactor(palette = "Set3", domain = seattle_individual())
     
@@ -292,19 +309,7 @@ our_server <- function(input, output, session) {
         ) 
   })
   
-  output$us_summary <- renderText({
-    if(input$data_type == "House") {
-      paste0("This visualization demonstrates the rates of ", input$var_type, " (in dollars) for almost each state in U.S. by deploying the 'House Price (in dollars)' in 
-              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time House Price Rates differs from State-to-State in U.S. in most recent years? 
-              Analysis: The one time House Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $100000 to $600000 as clearly conveyed by our plot.")
-      
-    } else {
-      paste0("This visualization demonstrates the rates of ", input$var_type, " (in dollars) for almost each state in U.S. by deploying the 'Rental Price (in dollars)' in 
-              Y-axis and 'State Abbraviations' in X-axis. Critical Question: How does the one time Rental Price Rates differs from State-to-State in U.S. in most recent years? 
-              Analysis: The annual Rental Price Rate differs from State-to-State in U.S. in most recent years in an approximate range from $12000 to $48000 as clearly conveyed by our plot.")
-    }
-    
-  })
+  
   
   
   

@@ -1,0 +1,28 @@
+## Gentrification: Exploring Housing and Rental Prices in Seattle Compared to the rest of the United States
+                              
+This Data Report will investigate gentrification in Seattle.
+
+Gentrification is when older neighborhoods are renovated to improve the overall quality of a neighborhood. This results in increased housing prices in those gentrified areas. Gentrification is a controversial topic because increased demand for the housing in the gentrified areas inevitably leads to increased housing prices, which can result in the displacement of lower-income residents who are unable to afford the increased housing and rental costs.Although the quality of life in these neighborhoods may be improved through gentrification, many people feel that the displacement of lower-income families is unfair and problematic.
+
+Therefore, we are going to explore the gentrification of Seattle by analyzing the trends of housing and rental prices in Seattle.
+                              
+**Questions we will be answering:**
+
+1) *An increase in housing and rental prices is one of the signs that a city is experiencing gentrification. If Seattle was experiencing gentrification, it would be expected that there would be a greater increase in Seattle housing and rental prices compared to the national averages in housing and rental prices. Knowing this, is it true that Seattle experiences a more rapid increase in housing and rental prices compared to national yearly averages?*
+
+2) *What are the trends of housing and rental prices in Seattle by year?*
+
+3) *Due to gentrification, is it true that the Seattle area experiences a faster increase in housing and rental prices compared to the rest of Washington State?*
+
+4) *As a result of gentrification, is it true that the Seattle area experiences a faster increase in housing and rental prices compared with other cities, such as San Francisco, where there may also be effects of gentrification?*
+
+
+**We will address those questions by showing visualizations of each case through the following:**
+
+- plots that show the annual housing and rental prices that relate to each question.
+
+- plots that show the change in percentage of housing and rental prices specific to each question.
+
+- summaries that use the visualizations to answer each question.
+
+

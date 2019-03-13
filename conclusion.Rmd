@@ -1,10 +1,26 @@
----
-title: 'Conclusion of HousingApp'
-output: html_document
----
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Through our _**HousingApp**_, we closely analyzed the housing and rental trends in Seattle to better understand the effect of gentrification in Seattle. We compared these trends with National housing and rental rates, housing and rental rates in other U.S. cities , and housing and rental rates of other cities in Washington State. We allowed users to interact with the data presented in various line plots by choosing the data that they wanted to see in order to better understand the various differences and trends in housing and rental rates. We also presented an interactive map visualization of the Seattle area that allows users to explore specific details about housing and rental rates in Seattle. We answered specific critical analysis questions for each part of our analysis while using our visualizations to enhance the overall user experience, and create an interactive and cohesive report for users to learn more about trends involving gentrification. Our interactive application also helps the users better understand the relevance of the data that they are interacting with, and why gentrification is such a significant topic in today's world. 
+## Conclusion of Data Report
+
+Through our _**HousingApp**_, we closely analyzed the housing and rental trends in Seattle to better understand the effect of gentrification in Seattle. We compared these trends with National housing and rental rates, housing and rental rates in other U.S. cities , and housing and rental rates of other cities in Washington State. We allowed users to interact with the data presented in various line plots by choosing the data that they wanted to see in order to better understand the various differences and trends in housing and rental rates. We also presented an interactive map visualization of the Seattle area that allows users to explore specific details about housing and rental rates in Seattle. We answered specific critical analysis questions for each part of our analysis while using our visualizations to enhance the overall user experience, and create an interactive and cohesive report for users to learn more about trends involving gentrification. Our interactive application also helps the users better understand the relevance of the data that they are interacting with, and why gentrification is such a significant topic in today's world. 
+
+**QUESTIONS**
+
+1) *An increase in housing and rental prices is one of the signs that a city is experiencing gentrification. If Seattle was experiencing gentrification, it would be expected that there would be a greater increase in Seattle housing and rental prices compared to the national averages in housing and rental prices. Knowing this, is it true that Seattle experiences a more rapid increase in housing and rental prices compared to national yearly averages?*
+
+Yes, the visualization shows that the increase in both housing and rental prices in Seattle is much greater than the average increase in housing and rental prices on the national level. 
+
+2) *What are the trends of housing and rental prices in Seattle by year?*
+
+Both housing and rental prices in Seattle were on an increasing trend at around the same percentage of growth from 2010 to 2019. 
+
+3) *Due to gentrification, is it true that the Seattle area experiences a faster increase in housing and rental prices compared to the rest of Washington State?*
+
+The Seattle area experienced a much greater and faster increase in housing and rental prices compared to the rest of Washington State.
+
+4) *As a result of gentrification, is it true that the Seattle area experiences a faster increase in housing and rental prices compared with other cities, such as San Francisco, where there may also be effects of gentrification?*
+
