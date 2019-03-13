@@ -19,7 +19,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                      # the App will then plot the data accordingly of the Seattle 
                      # Housing Listing/ Rent in terms of Rate/Percentage,
                      # depending on the user's input
-                     tabPanel(title = "vs National",
+                     tabPanel(title = "Seattle vs National",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
@@ -49,7 +49,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                      # Tab 2: showing two line representations of trends in 
                      # Seattle house listing AND rent in terms of 
                      # either Rate or Percentage increase, depending on user's input
-                     tabPanel(title = "trend",
+                     tabPanel(title = "Trends in Seattle Housing and Rental Prices",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
@@ -75,7 +75,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                      # the App will then plot the data accordingly of the Seattle 
                      # Housing Listing/ Rent in terms of Rate/Percentage,
                      # depending on the user's input
-                     tabPanel(title = "vs other Washington",
+                     tabPanel(title = "Seattle vs Rest of Washington",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
@@ -109,7 +109,7 @@ our_ui <- navbarPage("Seattle Gentrification",
                      # the App will then plot the data accordingly of the Seattle 
                      # Housing Listing/ Rent in terms of Rate/Percentage,
                      # depending on the user's input
-                     tabPanel(title = "vs other cities",
+                     tabPanel(title = "Seattle vs other U.S. Cities",
                               fluidPage(
                                 sidebarLayout(
                                   sidebarPanel(
