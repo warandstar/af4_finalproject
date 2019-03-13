@@ -6,6 +6,6 @@ library("ggplot2")
 source("our_ui.R")
 source("our_server.R")
 
-# To start running app, passing the variables defined in previous
+# To start run ning app, passing the variables defined in previous
 # code snippets into the `shinyApp()` function
 shinyApp(ui = our_ui, server = our_server)
