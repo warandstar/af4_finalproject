@@ -12,25 +12,10 @@ library("dplyr")
 # tab 4 will compare seattle with other region such as SF
 
 our_ui <- navbarPage("Seattle Gentrification",
-                     tabPanel(title = "Intro",
-                              titlePanel("Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle"),
-                              
-                              p("We are going to explore the simple case of gentrification in the example of Seattle"),
-                              
-                              p("Questions we will answers are: "),
-                              
-                              p("We will address those questions by showing visualization of each case by: "),
-                              
-                              p("First we will compare the Seattle's house and rental price with national average level."),
-                              
-                              p("Then, We will explore the trend of Seattle house and rental price."),
-                              
-                              p("Then, we will see if it is general case of Washington state or just Seattle."),
-                              
-                              p("Lastly we will compare with the Seattle area and other cities area."),
-                              
-                              p("We will present the map as well.")
+                     tabPanel(title = "Introduction", 
+                              includeHTML("introduction.html")
                      ),
+                     
                      
                      # Define UI for random distribution app ----
                      tabPanel(title = "vs National",

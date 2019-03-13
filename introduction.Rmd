@@ -1,0 +1,34 @@
+
+
+
+## Gentrification: Explore Housing & Rental Prices in the in U.S. compared to Seattle
+                              
+This Data Report will investigate gentrification in Seattle.
+
+Gentrification means the process when older neighborhoods are renovated to improve the overall quality of a neighborhood. One of factors that involves with gentrification is increase in house and rent prices. Thus, the problem of gentrification is that the residents in the cities will experience increase of cost of living. As a result, lower-income residents cannot afford the increase so that they move out of the cities and will be replaced by middle and higher income people from other cities.
+
+ 
+Therefore, we are going to look at the simple case of gentrification of Seattle by exploring the trends of houses and rental prices of Seattle.
+                              
+*Questions* we will answers are:
+
+1) As increase in price of houses and rents is one of signs that the city experiences the gentrification, it would be true for Seattle to have rapid increase in houses and rents relative to the national level. So, is it true that Seattle experiences the rapid increase in houses and rents compared to national level yearly?
+
+2) What is the trends of house and rent price of Seattle yearly?
+
+3) As a result of gentrification, is it true that the Seattle area experiences the rapid increase in houses and rents compared to Washington state outside of Seattle area?
+
+4) As a result of gentrification, is it true that the Seattle area experiences the rapid increase in houses and rents compared to other cities, such as San Francisco, where may also experience some sort of gentrification? 
+ 
+5) Assuming there is gentrification, what is trends of housing and rental prices of each cities of Seattle metropolitan area?
+
+
+We will address those questions by showing visualization of each case by following:
+
+- plot that shows prices of house or prices of rent yearly that satisifies to each question.
+
+- plot that shows the change of percentage of houses or rents yearly that satisfies each question.
+
+- summary that includes the table and the answers to the question.
+
+
