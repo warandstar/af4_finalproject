@@ -1,15 +1,25 @@
 library("shiny")
 library("dplyr")
 
+# tab 0 is introduction, 
 # tab 1 will have visualization of house and rent data of 
 # seattle and national level (compare) and user can choose between 
 # house price and rent price as well as between price in dollars and percentage change
 
-# tab 2 will have the seattle region's change over time for rent and house (?)
+# tab 2 will have the seattle area's change over time for rent and house 
 
 # tab 3 will have data and map of the seattle price level on each year 
 # based on user's selection
+
 # tab 4 will compare seattle with other region such as SF
+
+# tab 5 will be the interactive map
+
+# tab 6 will be the conclusion
+
+# tab 7 will be the resources
+
+# tab 8 will be describing authors
 
 our_ui <- navbarPage("Seattle Gentrification",
                      tabPanel(title = "Introduction", 
