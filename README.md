@@ -1,8 +1,8 @@
-**Technocrats** Final Project: _**HousingApp**_
+**Technocrats** Final Project: _**Seattle Gentrification App**_
 
 It’s no secret that housing and rental price rates in all over the United States is a SERIOUS matter of stress for everyone living here.
 
-Through our _**HousingApp**_, you will be able to analyze the Rental and Housing rates in Seattle itself and comparison to all states in U.S, to other cities of U.S., other cities of Washington through reactive visualizations, as you navigate further through our App!
+Through our _**Seattle Gentrification App**_, you will be able to analyze the Rental and Housing rates in Seattle itself and comparison to all states in U.S, to other cities of U.S., other cities of Washington through reactive visualizations, as you navigate further through our App!
 
 We will answer specific critical questions through each analysis in our App.
 
